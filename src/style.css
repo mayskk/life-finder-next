@@ -896,3 +896,26 @@ footer {
     filter: hue-rotate(18deg);
   }
 }
+
+/* SLOW PLANET ROTATION */
+
+.planet-body {
+  background-size:
+    200% 100%,
+    100% 100%;
+  animation: planetSurface 18s linear infinite;
+}
+
+@keyframes planetSurface {
+  from {
+    background-position:
+      0% 50%,
+      0% 0%;
+  }
+
+  to {
+    background-position:
+      100% 50%,
+      0% 0%;
+  }
+}
