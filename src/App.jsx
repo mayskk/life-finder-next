@@ -73,6 +73,19 @@ function Particles() {
   );
 }
 
+function Planet() {
+  return (
+    <div className="planet-scene" aria-hidden="true">
+      <div className="planet-ring" />
+
+      <div className="planet-body">
+        <div className="planet-light" />
+        <div className="planet-shadow" />
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState("home");
   const [planetName, setPlanetName] = useState("");
@@ -104,6 +117,8 @@ function App() {
       </header>
 
       <section className="hero">
+        <Planet />
+
         <motion.div
           className="hero-content"
           initial={{ opacity: 0, y: 30 }}
@@ -157,11 +172,13 @@ function App() {
         <section className="content-section">
           <h2>Проверка экзопланеты</h2>
           <p>Введи название планеты для исследования.</p>
+
           <input
             value={planetName}
             onChange={(event) => setPlanetName(event.target.value)}
             placeholder="Например, TRAPPIST-1 e"
           />
+
           <p className="notice">
             Подключение базы NASA добавим на следующем этапе.
           </p>
