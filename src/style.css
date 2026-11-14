@@ -851,3 +851,48 @@ footer {
     opacity: 0.3;
   }
 }
+
+/* REALISTIC PURPLE PLANET */
+
+.planet-body {
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      165deg,
+      transparent 0px,
+      rgba(255, 255, 255, 0.08) 8px,
+      rgba(120, 75, 210, 0.25) 15px,
+      transparent 25px,
+      rgba(35, 20, 90, 0.35) 38px
+    ),
+    radial-gradient(
+      circle at 32% 25%,
+      #e3c9ff 0%,
+      #a77bea 20%,
+      #7145c5 45%,
+      #38206f 72%,
+      #130d35 100%
+    );
+  box-shadow:
+    inset -35px -15px 55px rgba(5, 3, 25, 0.85),
+    inset 12px 8px 35px rgba(235, 210, 255, 0.35),
+    0 0 35px rgba(157, 95, 255, 0.4);
+  animation: planetSurface 24s linear infinite;
+}
+
+.planet-light {
+  background: radial-gradient(
+    circle at 30% 25%,
+    rgba(255, 255, 255, 0.55),
+    transparent 55%
+  );
+}
+
+@keyframes planetSurface {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(18deg);
+  }
+}
