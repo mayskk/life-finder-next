@@ -456,3 +456,101 @@ footer {
     opacity: 1;
   }
 }
+
+/* БОЛЬШАЯ КОСМИЧЕСКАЯ ПЛАНЕТА */
+
+.hero {
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 290px;
+  height: 290px;
+  right: 7%;
+  top: 12%;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #e5caff 0%,
+      #a77be9 12%,
+      #6540a9 38%,
+      #30205f 68%,
+      #11132e 100%
+    );
+
+  box-shadow:
+    inset -25px -18px 55px rgba(0, 0, 0, 0.7),
+    0 0 45px rgba(157, 100, 255, 0.45),
+    0 0 100px rgba(105, 75, 220, 0.2);
+
+  opacity: 0.65;
+  animation: planetFloat 9s ease-in-out infinite alternate;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 420px;
+  height: 115px;
+  right: 2%;
+  top: 31%;
+  border: 3px solid rgba(203, 169, 255, 0.7);
+  border-radius: 50%;
+  transform: rotate(-20deg);
+
+  box-shadow:
+    0 0 12px rgba(190, 145, 255, 0.6),
+    inset 0 0 12px rgba(190, 145, 255, 0.3);
+
+  opacity: 0.65;
+  animation: ringGlow 5s ease-in-out infinite alternate;
+}
+
+@keyframes planetFloat {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(12px);
+  }
+}
+
+@keyframes ringGlow {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+/* ПЛАНЕТА НА НЕБОЛЬШИХ ЭКРАНАХ */
+
+@media (max-width: 700px) {
+  .hero::before {
+    width: 190px;
+    height: 190px;
+    right: -55px;
+    top: 5%;
+    opacity: 0.35;
+  }
+
+  .hero::after {
+    width: 270px;
+    height: 75px;
+    right: -75px;
+    top: 17%;
+    opacity: 0.35;
+  }
+}
