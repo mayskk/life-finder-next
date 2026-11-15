@@ -85,12 +85,16 @@ function CosmicMeteors() {
 
 function Planet() {
   return (
-    <div className="planet-scene" aria-hidden="true">
-      <div className="planet-ring" />
-      <div className="planet-body">
-        <div className="planet-light" />
-        <div className="planet-shadow" />
+    <div className="planet-scene-v2" aria-hidden="true">
+      <div className="planet-ring-v2 planet-ring-back" />
+
+      <div className="planet-body-v2">
+        <div className="planet-light-v2" />
+        <div className="planet-shadow-v2" />
+        <div className="planet-texture-v2" />
       </div>
+
+      <div className="planet-ring-v2 planet-ring-front" />
     </div>
   );
 }
