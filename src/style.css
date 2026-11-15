@@ -1660,3 +1660,84 @@ body::after {
   animation-duration: 14s;
   width: 180px;
 }
+
+/* LIFE FINDER - VISIBLE SHOOTING STARS */
+
+.cosmic-meteors {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cosmic-meteor {
+  position: absolute;
+  display: block;
+  width: 180px;
+  height: 3px;
+  border-radius: 50%;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(150, 110, 255, 0.3),
+    #ffffff
+  );
+  box-shadow:
+    0 0 8px #ffffff,
+    0 0 18px #a879ff,
+    0 0 35px #8b5cff;
+  transform: rotate(-35deg);
+  animation: meteorVisible 7s linear infinite;
+}
+
+.meteor-one {
+  top: 12%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.meteor-two {
+  top: 38%;
+  left: 35%;
+  width: 140px;
+  animation-delay: -2.5s;
+  animation-duration: 9s;
+}
+
+.meteor-three {
+  top: 20%;
+  left: 75%;
+  width: 210px;
+  animation-delay: -5s;
+  animation-duration: 11s;
+}
+
+@keyframes meteorVisible {
+  0%, 65% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-35deg);
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 0;
+    transform: translate(65vw, 65vh) rotate(-35deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(65vw, 65vh) rotate(-35deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-meteor {
+    animation: none;
+    display: none;
+  }
+}
