@@ -3600,3 +3600,35 @@ footer::after {
     height: min(420px, 85vw) !important;
   }
 }
+
+/* TEMPORARILY HIDE HERO PLANET AND ORBITS */
+
+.hero-split-v3 .hero-planet-side-v3,
+.hero-split-v3 .planet-scene-v3,
+.hero-split-v3 .planet-ring-v3,
+.hero-split-v3 .planet-orbit-v3,
+.hero-split-v3 .planet-orbit-dot-v3 {
+  display: none !important;
+}
+
+.hero-split-v3 .hero-layout-v3 {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.hero-split-v3 .hero-content-v3 {
+  max-width: 850px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.hero-split-v3 .hero-content-v3 .hero-description {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-split-v3 .hero-content-v3 .hero-stats {
+  justify-content: center !important;
+}
