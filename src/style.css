@@ -1329,3 +1329,39 @@ footer {
     transform: none;
   }
 }
+
+/* COSMIC PLANET ANIMATIONS */
+
+.planet-card .card-planet {
+  position: relative;
+  animation: cosmicFloat 6s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+.planet-card:nth-child(2) .card-planet {
+  animation-delay: -2s;
+}
+
+.planet-card:nth-child(3) .card-planet {
+  animation-delay: -4s;
+}
+
+@keyframes cosmicFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    filter: brightness(1)
+      drop-shadow(0 0 10px rgba(150, 100, 255, 0.25));
+  }
+
+  50% {
+    transform: translateY(-9px) rotate(8deg);
+    filter: brightness(1.2)
+      drop-shadow(0 0 22px rgba(175, 120, 255, 0.55));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-card .card-planet {
+    animation: none;
+  }
+}
