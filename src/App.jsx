@@ -11,7 +11,6 @@ import {
   X,
   ArrowUpRight,
   Satellite,
-  Stars,
   Radar
 } from "lucide-react";
 
@@ -69,40 +68,6 @@ function Particles() {
           }}
         />
       ))}
-    </div>
-  );
-}
-
-function CosmicMeteors() {
-  return (
-    <div className="cosmic-meteors" aria-hidden="true">
-      <span className="cosmic-meteor meteor-one" />
-      <span className="cosmic-meteor meteor-two" />
-      <span className="cosmic-meteor meteor-three" />
-    </div>
-  );
-}
-
-function Planet() {
-  return (
-    <div className="planet-scene-v3" aria-hidden="true">
-      <div className="planet-orbit-v3 orbit-outer-v3" />
-      <div className="planet-orbit-v3 orbit-inner-v3" />
-
-      <div className="planet-ring-v3 planet-ring-back-v3" />
-
-      <div className="planet-body-v3">
-        <div className="planet-atmosphere-v3" />
-        <div className="planet-clouds-v3" />
-        <div className="planet-surface-v3" />
-        <div className="planet-light-v3" />
-        <div className="planet-shadow-v3" />
-      </div>
-
-      <div className="planet-ring-v3 planet-ring-front-v3" />
-
-      <div className="planet-orbit-dot-v3 orbit-dot-one-v3" />
-      <div className="planet-orbit-dot-v3 orbit-dot-two-v3" />
     </div>
   );
 }
@@ -243,7 +208,6 @@ function App() {
   return (
     <main className="app">
       <Particles />
-      <CosmicMeteors />
 
       <header className="navbar">
         <div className="brand">
@@ -261,16 +225,12 @@ function App() {
 
       {activeTab === "home" && (
         <>
-          <section className="hero hero-split-v3">
+          <section className="hero hero-split-v3 hero-clean-v4">
             <div className="hero-layout-v3">
-              <div className="hero-planet-side-v3">
-                <Planet />
-              </div>
-
               <motion.div
                 className="hero-content hero-content-v3"
-                initial={{ opacity: 0, x: 35 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
               >
                 <div className="eyebrow">
@@ -314,11 +274,6 @@ function App() {
                   </div>
                 </div>
               </motion.div>
-            </div>
-
-            <div className="hero-decoration hero-decoration-two hero-new-worlds-v3">
-              <Satellite size={20} />
-              <span>NEW WORLDS</span>
             </div>
           </section>
 
