@@ -3738,3 +3738,6 @@ footer::after {
   justify-content: center !important;
   flex-wrap: wrap !important;
 }
+.section-heading p {
+  color: #aaa2c4;
+}
