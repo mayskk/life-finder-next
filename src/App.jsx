@@ -85,16 +85,24 @@ function CosmicMeteors() {
 
 function Planet() {
   return (
-    <div className="planet-scene-v2" aria-hidden="true">
-      <div className="planet-ring-v2 planet-ring-back" />
+    <div className="planet-scene-v3" aria-hidden="true">
+      <div className="planet-orbit-v3 orbit-outer-v3" />
+      <div className="planet-orbit-v3 orbit-inner-v3" />
 
-      <div className="planet-body-v2">
-        <div className="planet-light-v2" />
-        <div className="planet-shadow-v2" />
-        <div className="planet-texture-v2" />
+      <div className="planet-ring-v3 planet-ring-back-v3" />
+
+      <div className="planet-body-v3">
+        <div className="planet-atmosphere-v3" />
+        <div className="planet-clouds-v3" />
+        <div className="planet-surface-v3" />
+        <div className="planet-light-v3" />
+        <div className="planet-shadow-v3" />
       </div>
 
-      <div className="planet-ring-v2 planet-ring-front" />
+      <div className="planet-ring-v3 planet-ring-front-v3" />
+
+      <div className="planet-orbit-dot-v3 orbit-dot-one-v3" />
+      <div className="planet-orbit-dot-v3 orbit-dot-two-v3" />
     </div>
   );
 }
@@ -253,66 +261,65 @@ function App() {
 
       {activeTab === "home" && (
         <>
-          <section className="hero">
-            <Planet />
+          <section className="hero hero-split-v3">
+            <div className="hero-layout-v3">
+              <div className="hero-planet-side-v3">
+                <Planet />
+              </div>
 
-            <div className="hero-decoration hero-decoration-one">
-              <Stars size={25} />
-              <span>DEEP SPACE</span>
+              <motion.div
+                className="hero-content hero-content-v3"
+                initial={{ opacity: 0, x: 35 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <div className="eyebrow">
+                  <Sparkles size={15} />
+                  EXPLORE THE UNIVERSE
+                </div>
+
+                <DecryptedTitle />
+
+                <p className="hero-subtitle">
+                  Исследуй далёкие миры.
+                  <br />
+                  Открой новые горизонты Вселенной.
+                </p>
+
+                <p className="hero-description">
+                  Находи экзопланеты и изучай их потенциальную
+                  пригодность для жизни.
+                </p>
+
+                <button
+                  className="star-button"
+                  onClick={() => setActiveTab("search")}
+                >
+                  <Search size={19} />
+                  Исследовать планеты
+                </button>
+
+                <div className="hero-stats">
+                  <div>
+                    <Orbit />
+                    <span>Экзопланеты</span>
+                  </div>
+                  <div>
+                    <Database />
+                    <span>Данные NASA</span>
+                  </div>
+                  <div>
+                    <Telescope />
+                    <span>Исследования</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
-            <div className="hero-decoration hero-decoration-two">
-              <Satellite size={23} />
+            <div className="hero-decoration hero-decoration-two hero-new-worlds-v3">
+              <Satellite size={20} />
               <span>NEW WORLDS</span>
             </div>
-
-            <motion.div
-              className="hero-content"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <div className="eyebrow">
-                <Sparkles size={15} />
-                EXPLORE THE UNIVERSE
-              </div>
-
-              <DecryptedTitle />
-
-              <p className="hero-subtitle">
-                Исследуй далёкие миры.
-                <br />
-                Открой новые горизонты Вселенной.
-              </p>
-
-              <p className="hero-description">
-                Находи экзопланеты и изучай их потенциальную
-                пригодность для жизни.
-              </p>
-
-              <button
-                className="star-button"
-                onClick={() => setActiveTab("search")}
-              >
-                <Search size={19} />
-                Исследовать планеты
-              </button>
-
-              <div className="hero-stats">
-                <div>
-                  <Orbit />
-                  <span>Экзопланеты</span>
-                </div>
-                <div>
-                  <Database />
-                  <span>Данные NASA</span>
-                </div>
-                <div>
-                  <Telescope />
-                  <span>Исследования</span>
-                </div>
-              </div>
-            </motion.div>
           </section>
 
           <ResearchDashboard />
