@@ -1263,3 +1263,69 @@ footer {
     font-size: 23px;
   }
 }
+
+/* COSMIC PLANET CARDS HOVER EFFECT */
+
+.planet-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(174, 125, 255, 0.22);
+  border-radius: 22px;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  cursor: pointer;
+}
+
+.planet-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    rgba(173, 115, 255, 0.22),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.planet-card:hover {
+  transform: translateY(-10px) scale(1.025);
+  border-color: rgba(190, 145, 255, 0.8);
+  box-shadow:
+    0 15px 45px rgba(105, 45, 210, 0.25),
+    0 0 25px rgba(160, 100, 255, 0.2);
+}
+
+.planet-card:hover::before {
+  opacity: 1;
+}
+
+.planet-card .card-planet {
+  transition:
+    transform 0.5s ease,
+    filter 0.5s ease;
+}
+
+.planet-card:hover .card-planet {
+  transform: scale(1.12) rotate(5deg);
+  filter: brightness(1.2)
+    drop-shadow(0 0 18px rgba(175, 120, 255, 0.65));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-card,
+  .planet-card::before,
+  .planet-card .card-planet {
+    transition: none;
+  }
+
+  .planet-card:hover {
+    transform: none;
+  }
+}
