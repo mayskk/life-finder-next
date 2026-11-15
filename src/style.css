@@ -2942,3 +2942,115 @@ footer::after {
     display: none;
   }
 }
+
+/* Центрируем планету внутри орбит */
+.planet-scene {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.planet-scene .planet-body {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+}
+
+/* Орбиты располагаются вокруг планеты */
+.planet-scene::before,
+.planet-scene::after {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* LIFE FINDER — новые объёмные кольца планеты */
+.planet-scene {
+  perspective: 1000px;
+}
+
+.planet-scene .planet-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 125%;
+  height: 125%;
+  border: 2px solid rgba(190, 155, 255, 0.65);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-28deg) rotateY(68deg);
+  box-shadow:
+    0 0 12px rgba(166, 112, 255, 0.45),
+    inset 0 0 12px rgba(166, 112, 255, 0.2);
+  pointer-events: none;
+  animation: livingRing 18s linear infinite;
+}
+
+@keyframes livingRing {
+  from {
+    transform: translate(-50%, -50%) rotate(-28deg) rotateY(68deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(332deg) rotateY(68deg);
+  }
+}
+
+/* Мягкое свечение планеты */
+.planet-scene .planet-body {
+  box-shadow:
+    inset -25px -20px 45px rgba(12, 5, 35, 0.7),
+    inset 12px 8px 25px rgba(255, 255, 255, 0.18),
+    0 0 45px rgba(151, 94, 255, 0.4);
+}
+
+/* Исправление расположения планеты и орбит */
+.planet-scene {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  isolation: isolate;
+}
+
+.planet-scene .planet-body {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2 !important;
+}
+
+/* Декоративные надписи поверх фоновых эффектов */
+.hero-decoration {
+  position: absolute !important;
+  z-index: 10 !important;
+  pointer-events: none;
+}
+
+.hero-decoration-one {
+  top: 18% !important;
+  left: 7% !important;
+}
+
+.hero-decoration-two {
+  top: 25% !important;
+  right: 7% !important;
+}
+
+/* Заголовок остаётся поверх декоративных элементов */
+.hero-content {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+/* Орбиты центрируются относительно сцены */
+.planet-scene::before,
+.planet-scene::after {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none;
+}
