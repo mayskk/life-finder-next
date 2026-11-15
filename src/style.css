@@ -2673,3 +2673,88 @@ body::after {
     animation: none;
   }
 }
+
+/* =====================================
+   LIFE FINDER — FUTURISTIC NAVBAR
+===================================== */
+
+.navbar {
+  position: relative;
+  z-index: 20;
+  border-bottom: 1px solid rgba(170, 130, 255, 0.16);
+  background: rgba(9, 6, 25, 0.72);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.16);
+}
+
+.brand {
+  color: #fff;
+  transition: 0.3s ease;
+}
+
+.brand svg {
+  color: #b995ff;
+  filter: drop-shadow(0 0 9px rgba(170, 120, 255, 0.7));
+  animation: brandOrbit 12s linear infinite;
+}
+
+.brand span {
+  letter-spacing: 2px;
+  text-shadow: 0 0 18px rgba(165, 115, 255, 0.3);
+}
+
+@keyframes brandOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar nav button {
+  position: relative;
+  padding: 11px 16px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  color: #bcb3d4;
+  background: transparent;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.navbar nav button:hover {
+  color: #fff;
+  border-color: rgba(175, 135, 255, 0.25);
+  background: rgba(135, 85, 220, 0.13);
+  box-shadow: 0 0 20px rgba(130, 75, 220, 0.13);
+}
+
+.navbar nav button:focus-visible {
+  outline: 2px solid #b995ff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    gap: 12px;
+  }
+
+  .navbar nav {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navbar nav button {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+
+  .brand span {
+    letter-spacing: 1px;
+  }
+}
