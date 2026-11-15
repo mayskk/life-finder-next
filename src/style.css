@@ -1509,3 +1509,122 @@ body::after {
     animation: none;
   }
 }
+
+/* =====================================
+   LIFE FINDER - COSMIC UPGRADE
+   ===================================== */
+
+/* 1. DEEP SPACE NEBULA */
+
+body {
+  background-color: #080518;
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(115, 45, 210, 0.25), transparent 45%),
+    radial-gradient(ellipse at 85% 35%, rgba(35, 115, 220, 0.20), transparent 42%),
+    radial-gradient(ellipse at 50% 85%, rgba(150, 55, 210, 0.20), transparent 48%);
+  background-attachment: fixed;
+}
+
+/* 2. COSMIC GLOW */
+
+#root {
+  isolation: isolate;
+}
+
+#root::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 25% 40%, rgba(110, 50, 210, 0.16), transparent 35%),
+    radial-gradient(ellipse at 75% 60%, rgba(40, 130, 220, 0.13), transparent 35%);
+  filter: blur(45px);
+  animation: nebulaDrift 18s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaDrift {
+  from {
+    transform: translate(-2%, -1%) scale(1);
+  }
+  to {
+    transform: translate(2%, 2%) scale(1.12);
+  }
+}
+
+/* 3. TWINKLING STARS */
+
+body::after {
+  background-image:
+    radial-gradient(3px 3px at 10% 15%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 25% 65%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(3px 3px at 40% 30%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 55% 80%, #c7a2ff 50%, transparent 100%),
+    radial-gradient(3px 3px at 70% 20%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 85% 55%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(3px 3px at 95% 85%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 18% 90%, #a9caff 50%, transparent 100%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  animation: visibleStars 4s ease-in-out infinite alternate;
+}
+
+@keyframes visibleStars {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.95;
+  }
+}
+
+/* 4. SHOOTING METEORS */
+
+.cosmic-meteor {
+  position: fixed;
+  top: -10%;
+  left: 0;
+  width: 150px;
+  height: 2px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(180, 150, 255, 0.2),
+    white
+  );
+  box-shadow: 0 0 12px rgba(190, 155, 255, 0.9);
+  transform: rotate(-35deg);
+  animation: meteorFlight 9s linear infinite;
+}
+
+@keyframes meteorFlight {
+  0%, 75% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-35deg);
+  }
+  77% {
+    opacity: 1;
+  }
+  84% {
+    opacity: 0;
+    transform: translate(75vw, 65vh) rotate(-35deg);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Respect reduced motion settings */
+
+@media (prefers-reduced-motion: reduce) {
+  #root::before,
+  body::after,
+  .cosmic-meteor {
+    animation: none !important;
+  }
+}
