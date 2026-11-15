@@ -1419,3 +1419,47 @@ body::before {
     animation: none;
   }
 }
+
+/* LIFE FINDER - VISIBLE COSMIC STARS */
+
+body {
+  position: relative;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(2px 2px at 10% 15%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 25% 65%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 30%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 55% 80%, #c7a2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 20%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 85% 55%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 95% 85%, white 50%, transparent 100%);
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  animation: visibleStars 3s ease-in-out infinite alternate;
+}
+
+@keyframes visibleStars {
+  from {
+    opacity: 0.35;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
+}
