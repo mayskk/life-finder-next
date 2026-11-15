@@ -3741,3 +3741,126 @@ footer::after {
 .section-heading p {
   color: #aaa2c4;
 }
+/* =================================
+   LIFE FINDER — NEW HERO DESIGN
+================================= */
+
+.hero {
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 100px 8%;
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(111, 65, 220, 0.16),
+    rgba(65, 35, 130, 0.06) 45%,
+    transparent 72%
+  );
+  filter: blur(35px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero-split-v3 {
+  position: relative;
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(48px, 8vw, 100px);
+  font-weight: 800;
+  letter-spacing: 5px;
+  line-height: 1.1;
+  margin-bottom: 28px;
+  color: #ffffff;
+  text-shadow:
+    0 0 12px rgba(174, 125, 255, 0.65),
+    0 0 35px rgba(130, 75, 255, 0.35);
+}
+
+.hero-content p {
+  max-width: 650px;
+  margin: 0 auto 35px;
+  color: #c4badf;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.8;
+}
+
+.hero-content button {
+  padding: 15px 34px;
+  border: 1px solid rgba(190, 150, 255, 0.7);
+  border-radius: 50px;
+  background: linear-gradient(
+    120deg,
+    rgba(111, 55, 210, 0.95),
+    rgba(65, 35, 145, 0.95)
+  );
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow:
+    0 0 20px rgba(126, 75, 255, 0.35),
+    inset 0 0 12px rgba(255, 255, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+.hero-content button:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 30px rgba(155, 105, 255, 0.65),
+    0 0 65px rgba(115, 65, 220, 0.25);
+}
+
+.hero-content .hero-label {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #b99aff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    min-height: 540px;
+    padding: 80px 22px;
+  }
+
+  .hero-content h1 {
+    letter-spacing: 2px;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+  }
+}
