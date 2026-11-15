@@ -919,3 +919,165 @@ footer {
       0% 0%;
   }
 }
+
+/* UNIVERSE DISCOVERY SECTION */
+
+.universe-section {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, 92%);
+  margin: 40px auto 100px;
+  padding: 70px 0;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-heading > span {
+  color: #b99aff;
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-weight: 700;
+}
+
+.section-heading h2 {
+  font-size: clamp(30px, 5vw, 46px);
+  color: #fff;
+  margin: 16px 0;
+}
+
+.section-heading p {
+  color: #aaa6c7;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.planet-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+}
+
+.planet-card {
+  overflow: hidden;
+  border: 1px solid rgba(178, 139, 255, 0.2);
+  border-radius: 22px;
+  background: rgba(22, 17, 48, 0.78);
+  backdrop-filter: blur(14px);
+  transition: transform 0.35s, border-color 0.35s;
+}
+
+.planet-card:hover {
+  transform: translateY(-9px);
+  border-color: rgba(190, 150, 255, 0.75);
+}
+
+.planet-card-image {
+  height: 210px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(115, 73, 190, 0.3),
+      transparent 65%
+    ),
+    #100c29;
+}
+
+.card-planet {
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset -25px -15px 35px rgba(0, 0, 0, 0.65);
+  animation: cardPlanetFloat 5s ease-in-out infinite;
+}
+
+.planet-purple {
+  background: radial-gradient(circle at 30% 25%, #e6caff, #9660d9 45%, #30205e 85%);
+}
+
+.planet-blue {
+  background: radial-gradient(circle at 30% 25%, #b6e8ff, #478cc9 45%, #152d66 85%);
+}
+
+.planet-pink {
+  background: radial-gradient(circle at 30% 25%, #ffd0e8, #c05e9e 45%, #51204d 85%);
+}
+
+.card-planet-glow {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(215, 185, 255, 0.35);
+  box-shadow: 0 0 30px rgba(159, 104, 255, 0.3);
+}
+
+.planet-number {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.planet-card-content {
+  padding: 25px;
+}
+
+.planet-type {
+  color: #b99aff;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.planet-card-content h3 {
+  color: white;
+  font-size: 21px;
+  margin: 13px 0;
+  overflow-wrap: anywhere;
+}
+
+.planet-card-content p {
+  color: #aaa6c7;
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 66px;
+}
+
+.planet-distance {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #d5c4ff;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+@keyframes cardPlanetFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@media (max-width: 800px) {
+  .planet-cards {
+    grid-template-columns: 1fr;
+    max-width: 430px;
+    margin: 0 auto;
+  }
+
+  .universe-section {
+    margin-top: 20px;
+  }
+}
