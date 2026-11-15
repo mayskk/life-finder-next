@@ -2505,3 +2505,171 @@ body::after {
     animation: none;
   }
 }
+
+/* =====================================
+   LIFE FINDER — PLANET CARDS UPGRADE
+===================================== */
+
+.planet-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(175, 135, 255, 0.17);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(130, 80, 210, 0.13),
+      transparent 65%
+    ),
+    rgba(17, 12, 39, 0.88);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+
+.planet-card:hover {
+  border-color: rgba(190, 150, 255, 0.55);
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.3),
+    0 0 35px rgba(130, 75, 230, 0.16);
+}
+
+.planet-card-image {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(115, 75, 190, 0.2),
+      transparent 65%
+    ),
+    rgba(12, 9, 30, 0.65);
+}
+
+.planet-card-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 25%, white 50%, transparent 100%),
+    radial-gradient(1px 1px at 75% 30%, #c9aaff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 75%, white 50%, transparent 100%),
+    radial-gradient(1px 1px at 30% 80%, #a6c8ff 50%, transparent 100%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.card-planet {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.5s ease;
+  box-shadow:
+    inset -15px -15px 30px rgba(0, 0, 0, 0.4),
+    0 0 35px rgba(150, 100, 255, 0.22);
+  animation: cardPlanetFloat 6s ease-in-out infinite;
+}
+
+.planet-card:hover .card-planet {
+  transform: scale(1.09) rotate(8deg);
+}
+
+@keyframes cardPlanetFloat {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -9px;
+  }
+}
+
+.planet-purple {
+  background:
+    radial-gradient(circle at 30% 25%, #e5c9ff 0%, transparent 17%),
+    radial-gradient(circle at 65% 70%, #472071 0%, transparent 40%),
+    linear-gradient(135deg, #d2a5ff, #8548c5 48%, #291044);
+}
+
+.planet-blue {
+  background:
+    radial-gradient(circle at 30% 25%, #d6f1ff 0%, transparent 17%),
+    radial-gradient(circle at 65% 70%, #173b77 0%, transparent 40%),
+    linear-gradient(135deg, #8bdcff, #3e72c8 48%, #111e4c);
+}
+
+.planet-pink {
+  background:
+    radial-gradient(circle at 30% 25%, #ffe1f4 0%, transparent 17%),
+    radial-gradient(circle at 65% 70%, #782b69 0%, transparent 40%),
+    linear-gradient(135deg, #ffa8d9, #c052a4 48%, #48183f);
+}
+
+.card-planet-glow {
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(24px);
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.planet-number {
+  color: rgba(225, 205, 255, 0.8);
+  text-shadow: 0 0 15px rgba(175, 130, 255, 0.5);
+}
+
+.planet-card-content {
+  position: relative;
+}
+
+.planet-type {
+  color: #b99aff;
+  letter-spacing: 1px;
+}
+
+.planet-card-content h3 {
+  color: #fff;
+  text-shadow: 0 0 18px rgba(160, 110, 255, 0.12);
+}
+
+.planet-card-content p {
+  color: #aaa2c4;
+  line-height: 1.7;
+}
+
+.planet-distance {
+  color: #c7b5ef;
+}
+
+.planet-open {
+  color: #c7a5ff;
+  transition: color 0.3s ease;
+}
+
+.planet-card:hover .planet-open {
+  color: #fff;
+}
+
+/* Accessibility */
+
+.planet-card:focus-visible {
+  outline: 2px solid #b99aff;
+  outline-offset: 5px;
+}
+
+/* Mobile */
+
+@media (max-width: 760px) {
+  .planet-card {
+    border-radius: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-planet {
+    animation: none;
+  }
+}
