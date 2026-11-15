@@ -2758,3 +2758,66 @@ body::after {
     letter-spacing: 1px;
   }
 }
+
+/* =====================================
+   LIFE FINDER — COSMIC FOOTER
+===================================== */
+
+footer {
+  position: relative;
+  z-index: 2;
+  margin-top: 70px;
+  padding: 45px 20px 35px;
+  overflow: hidden;
+  border-top: 1px solid rgba(175, 130, 255, 0.2);
+  color: #bca9e8;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(115, 65, 190, 0.16),
+      transparent 65%
+    ),
+    rgba(8, 5, 23, 0.9);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px rgba(160, 110, 255, 0.25);
+}
+
+footer::before {
+  content: "✦";
+  display: block;
+  margin-bottom: 15px;
+  color: #c6a5ff;
+  font-size: 25px;
+  text-shadow: 0 0 20px #a875ff;
+  animation: footerStar 3s ease-in-out infinite;
+}
+
+footer::after {
+  content: "EXPLORING WORLDS BEYOND OUR OWN";
+  display: block;
+  margin-top: 13px;
+  color: #77708f;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+@keyframes footerStar {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(0.9) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(15deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  footer::before {
+    animation: none;
+  }
+}
