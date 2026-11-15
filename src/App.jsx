@@ -9,7 +9,10 @@ import {
   Sparkles,
   Globe2,
   X,
-  ArrowUpRight
+  ArrowUpRight,
+  Satellite,
+  Stars,
+  Radar
 } from "lucide-react";
 
 const originalTitle = "LIFE FINDER";
@@ -27,9 +30,7 @@ function DecryptedTitle() {
         originalTitle.split("").map((letter, index) => {
           if (index < iteration) return originalTitle[index];
           if (letter === " ") return " ";
-          return characters[
-            Math.floor(Math.random() * characters.length)
-          ];
+          return characters[Math.floor(Math.random() * characters.length)];
         }).join("")
       );
 
@@ -94,6 +95,75 @@ function Planet() {
   );
 }
 
+function ResearchDashboard() {
+  const statistics = [
+    {
+      icon: <Orbit />,
+      value: "6 000+",
+      label: "известных экзопланет",
+      detail: "Открытые далёкие миры"
+    },
+    {
+      icon: <Globe2 />,
+      value: "100+",
+      label: "интересных миров",
+      detail: "Для дальнейшего изучения"
+    },
+    {
+      icon: <Radar />,
+      value: "4 000+",
+      label: "звёздных систем",
+      detail: "Области космических открытий"
+    },
+    {
+      icon: <Satellite />,
+      value: "NASA",
+      label: "космические данные",
+      detail: "Научные наблюдения"
+    }
+  ];
+
+  return (
+    <section className="research-dashboard">
+      <div className="dashboard-heading">
+        <div>
+          <span className="dashboard-overline">THE UNIVERSE IN NUMBERS</span>
+          <h2>Космос в цифрах</h2>
+          <p>Немного о масштабах поиска новых миров</p>
+        </div>
+
+        <div className="dashboard-live">
+          <span className="live-dot" />
+          SPACE OVERVIEW
+        </div>
+      </div>
+
+      <div className="dashboard-grid">
+        {statistics.map((item, index) => (
+          <motion.div
+            className="dashboard-card"
+            key={item.label}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.12 }}
+            whileHover={{ y: -6 }}
+          >
+            <div className="dashboard-icon">{item.icon}</div>
+            <strong>{item.value}</strong>
+            <span className="dashboard-label">{item.label}</span>
+            <span className="dashboard-detail">{item.detail}</span>
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="dashboard-note">
+        Демонстрационные показатели · LIFE FINDER
+      </p>
+    </section>
+  );
+}
+
 const planets = [
   {
     name: "TRAPPIST-1 e",
@@ -155,10 +225,7 @@ function App() {
     }
 
     window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
+    return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
   return (
@@ -173,18 +240,10 @@ function App() {
         </div>
 
         <nav>
-          <button onClick={() => setActiveTab("home")}>
-            Главная
-          </button>
-          <button onClick={() => setActiveTab("search")}>
-            Проверка планет
-          </button>
-          <button onClick={() => setActiveTab("catalog")}>
-            Каталог
-          </button>
-          <button onClick={() => setActiveTab("about")}>
-            О проекте
-          </button>
+          <button onClick={() => setActiveTab("home")}>Главная</button>
+          <button onClick={() => setActiveTab("search")}>Проверка планет</button>
+          <button onClick={() => setActiveTab("catalog")}>Каталог</button>
+          <button onClick={() => setActiveTab("about")}>О проекте</button>
         </nav>
       </header>
 
@@ -192,6 +251,16 @@ function App() {
         <>
           <section className="hero">
             <Planet />
+
+            <div className="hero-decoration hero-decoration-one">
+              <Stars size={25} />
+              <span>DEEP SPACE</span>
+            </div>
+
+            <div className="hero-decoration hero-decoration-two">
+              <Satellite size={23} />
+              <span>NEW WORLDS</span>
+            </div>
 
             <motion.div
               className="hero-content"
@@ -242,6 +311,8 @@ function App() {
             </motion.div>
           </section>
 
+          <ResearchDashboard />
+
           <section className="universe-section">
             <div className="section-heading">
               <span>DISCOVER NEW WORLDS</span>
@@ -277,18 +348,12 @@ function App() {
                     <div className={`card-planet ${planet.color}`}>
                       <div className="card-planet-glow" />
                     </div>
-                    <span className="planet-number">
-                      0{index + 1}
-                    </span>
+                    <span className="planet-number">0{index + 1}</span>
                   </div>
 
                   <div className="planet-card-content">
-                    <span className="planet-type">
-                      {planet.type}
-                    </span>
-
+                    <span className="planet-type">{planet.type}</span>
                     <h3>{planet.name}</h3>
-
                     <p>{planet.description}</p>
 
                     <div className="planet-distance">
@@ -370,21 +435,14 @@ function App() {
               </button>
 
               <div className="planet-modal-visual">
-                <div
-                  className={`card-planet ${selectedPlanet.color}`}
-                >
+                <div className={`card-planet ${selectedPlanet.color}`}>
                   <div className="card-planet-glow" />
                 </div>
               </div>
 
               <div className="planet-modal-content">
-                <span className="planet-type">
-                  {selectedPlanet.type}
-                </span>
-
-                <h2 id="planet-modal-title">
-                  {selectedPlanet.name}
-                </h2>
+                <span className="planet-type">{selectedPlanet.type}</span>
+                <h2 id="planet-modal-title">{selectedPlanet.name}</h2>
 
                 <p className="planet-modal-description">
                   {selectedPlanet.description}
