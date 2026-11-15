@@ -2,16 +2,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Telescope,
-  Search,
-  Orbit,
-  Database,
-  Sparkles,
-  Globe2,
-  X,
-  ArrowUpRight,
-  Satellite,
-  Radar
+  Telescope, Search, Orbit, Database, Sparkles, Globe2,
+  X, ArrowUpRight, Satellite, Radar
 } from "lucide-react";
 
 const originalTitle = "LIFE FINDER";
@@ -26,14 +18,11 @@ function DecryptedTitle() {
 
     const interval = setInterval(() => {
       setTitle(
-        originalTitle
-          .split("")
-          .map((letter, index) => {
-            if (index < iteration) return originalTitle[index];
-            if (letter === " ") return " ";
-            return characters[Math.floor(Math.random() * characters.length)];
-          })
-          .join("")
+        originalTitle.split("").map((letter, index) => {
+          if (index < iteration) return originalTitle[index];
+          if (letter === " ") return " ";
+          return characters[Math.floor(Math.random() * characters.length)];
+        }).join("")
       );
 
       iteration += 0.35;
@@ -58,20 +47,24 @@ function DecryptedTitle() {
 function Particles() {
   return (
     <div className="particles">
-      {Array.from({ length: 90 }).map((_, index) => (
-        <span
-          className="particle"
-          key={index}
-          style={{
-            left: `${(index * 37) % 100}%`,
-            top: `${(index * 61) % 100}%`,
-            animationDelay: `${(index % 8) * -0.7}s`,
-            animationDuration: `${5 + (index % 6)}s`,
-            "--size": `${2 + (index % 3)}px`,
-            "--drift": `${((index % 5) - 2) * 18}px`
-          }}
-        />
-      ))}
+      {Array.from({ length: 220 }).map((_, index) => {
+        const isLarge = index % 17 === 0;
+
+        return (
+          <span
+            className={`particle ${isLarge ? "particle-bright" : ""}`}
+            key={index}
+            style={{
+              left: `${(index * 37.17) % 100}%`,
+              top: `${(index * 61.31) % 100}%`,
+              animationDelay: `${(index % 13) * -0.8}s`,
+              animationDuration: `${4 + (index % 9)}s`,
+              "--size": `${1 + (index % 4)}px`,
+              "--drift": `${((index % 7) - 3) * 20}px`
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -80,16 +73,23 @@ function CosmicBackground() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    let frame;
+
     const handlePointer = (event) => {
-      setPointer({
-        x: (event.clientX / window.innerWidth - 0.5) * 2,
-        y: (event.clientY / window.innerHeight - 0.5) * 2
+      cancelAnimationFrame(frame);
+
+      frame = requestAnimationFrame(() => {
+        setPointer({
+          x: (event.clientX / window.innerWidth - 0.5) * 2,
+          y: (event.clientY / window.innerHeight - 0.5) * 2
+        });
       });
     };
 
     window.addEventListener("pointermove", handlePointer, { passive: true });
 
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", handlePointer);
     };
   }, []);
@@ -100,24 +100,21 @@ function CosmicBackground() {
 
       <div
         className="cosmic-nebula cosmic-nebula-one"
-        style={{
-          transform: `translate(${pointer.x * -15}px, ${pointer.y * -12}px)`
-        }}
+        style={{ transform: `translate(${pointer.x * -25}px, ${pointer.y * -18}px)` }}
       />
 
       <div
         className="cosmic-nebula cosmic-nebula-two"
-        style={{
-          transform: `translate(${pointer.x * 20}px, ${pointer.y * 15}px)`
-        }}
+        style={{ transform: `translate(${pointer.x * 30}px, ${pointer.y * 22}px)` }}
       />
 
       <div
         className="cosmic-nebula cosmic-nebula-three"
-        style={{
-          transform: `translate(${pointer.x * -10}px, ${pointer.y * 18}px)`
-        }}
+        style={{ transform: `translate(${pointer.x * -18}px, ${pointer.y * 28}px)` }}
       />
+
+      <div className="cosmic-nebula cosmic-nebula-four" />
+      <div className="cosmic-nebula cosmic-nebula-five" />
 
       <div className="cosmic-light-beam" />
       <div className="cosmic-stars">
@@ -125,36 +122,27 @@ function CosmicBackground() {
       </div>
 
       <div className="cosmic-grid" />
+
+      <div className="cosmic-orbit cosmic-orbit-one" />
+      <div className="cosmic-orbit cosmic-orbit-two" />
+      <div className="cosmic-orbit cosmic-orbit-three" />
+
+      <div className="cosmic-dust cosmic-dust-one" />
+      <div className="cosmic-dust cosmic-dust-two" />
+      <div className="cosmic-dust cosmic-dust-three" />
+
+      <div className="cosmic-flare cosmic-flare-one" />
+      <div className="cosmic-flare cosmic-flare-two" />
     </div>
   );
 }
 
 function ResearchDashboard() {
   const statistics = [
-    {
-      icon: <Orbit />,
-      value: "6 000+",
-      label: "известных экзопланет",
-      detail: "Открытые далёкие миры"
-    },
-    {
-      icon: <Globe2 />,
-      value: "100+",
-      label: "интересных миров",
-      detail: "Для дальнейшего изучения"
-    },
-    {
-      icon: <Radar />,
-      value: "4 000+",
-      label: "звёздных систем",
-      detail: "Области космических открытий"
-    },
-    {
-      icon: <Satellite />,
-      value: "NASA",
-      label: "космические данные",
-      detail: "Научные наблюдения"
-    }
+    { icon: <Orbit />, value: "6 000+", label: "известных экзопланет", detail: "Открытые далёкие миры" },
+    { icon: <Globe2 />, value: "100+", label: "интересных миров", detail: "Для дальнейшего изучения" },
+    { icon: <Radar />, value: "4 000+", label: "звёздных систем", detail: "Области космических открытий" },
+    { icon: <Satellite />, value: "NASA", label: "космические данные", detail: "Научные наблюдения" }
   ];
 
   return (
@@ -165,7 +153,6 @@ function ResearchDashboard() {
           <h2>Космос в цифрах</h2>
           <p>Немного о масштабах поиска новых миров</p>
         </div>
-
         <div className="dashboard-live">
           <span className="live-dot" />
           SPACE OVERVIEW
@@ -203,46 +190,40 @@ const planets = [
     name: "TRAPPIST-1 e",
     type: "Каменистая экзопланета",
     distance: "Около 40 световых лет",
-    description:
-      "Одна из интересных планет системы TRAPPIST-1 для исследования потенциальной обитаемости.",
+    description: "Одна из интересных планет системы TRAPPIST-1 для исследования потенциальной обитаемости.",
     color: "planet-purple",
     facts: [
       "Находится в системе звезды TRAPPIST-1.",
       "Её размер близок к размеру Земли.",
       "Расположена в обитаемой зоне своей звезды."
     ],
-    note:
-      "Нахождение в обитаемой зоне не означает, что на планете существует жизнь."
+    note: "Нахождение в обитаемой зоне не означает, что на планете существует жизнь."
   },
   {
     name: "Proxima Centauri b",
     type: "Экзопланета у красного карлика",
     distance: "Около 4,2 светового года",
-    description:
-      "Известная экзопланета, вращающаяся вокруг ближайшей к Солнцу звезды.",
+    description: "Известная экзопланета, вращающаяся вокруг ближайшей к Солнцу звезды.",
     color: "planet-blue",
     facts: [
       "Обращается вокруг звезды Проксима Центавра.",
       "Находится в нашей ближайшей звёздной системе.",
       "Получает энергию от красного карлика."
     ],
-    note:
-      "Условия на поверхности планеты пока неизвестны."
+    note: "Условия на поверхности планеты пока неизвестны."
   },
   {
     name: "Kepler-186f",
     type: "Каменистая экзопланета",
     distance: "Около 500 световых лет",
-    description:
-      "Первая известная планета земного размера, обнаруженная в обитаемой зоне другой звезды.",
+    description: "Первая известная планета земного размера, обнаруженная в обитаемой зоне другой звезды.",
     color: "planet-pink",
     facts: [
       "Обнаружена космическим телескопом Kepler.",
       "Находится в системе красного карлика.",
       "Её радиус близок к радиусу Земли."
     ],
-    note:
-      "Наличие атмосферы и жидкой воды на поверхности не подтверждено."
+    note: "Наличие атмосферы и жидкой воды на поверхности не подтверждено."
   }
 ];
 
@@ -253,9 +234,7 @@ function App() {
 
   useEffect(() => {
     function handleEscape(event) {
-      if (event.key === "Escape") {
-        setSelectedPlanet(null);
-      }
+      if (event.key === "Escape") setSelectedPlanet(null);
     }
 
     window.addEventListener("keydown", handleEscape);
@@ -317,18 +296,9 @@ function App() {
                 </button>
 
                 <div className="hero-stats">
-                  <div>
-                    <Orbit />
-                    <span>Экзопланеты</span>
-                  </div>
-                  <div>
-                    <Database />
-                    <span>Данные NASA</span>
-                  </div>
-                  <div>
-                    <Telescope />
-                    <span>Исследования</span>
-                  </div>
+                  <div><Orbit /><span>Экзопланеты</span></div>
+                  <div><Database /><span>Данные NASA</span></div>
+                  <div><Telescope /><span>Исследования</span></div>
                 </div>
               </motion.div>
             </div>
@@ -378,12 +348,10 @@ function App() {
                     <span className="planet-type">{planet.type}</span>
                     <h3>{planet.name}</h3>
                     <p>{planet.description}</p>
-
                     <div className="planet-distance">
                       <Globe2 size={16} />
                       {planet.distance}
                     </div>
-
                     <div className="planet-open">
                       Подробнее о планете
                       <ArrowUpRight size={17} />
@@ -466,7 +434,6 @@ function App() {
               <div className="planet-modal-content">
                 <span className="planet-type">{selectedPlanet.type}</span>
                 <h2 id="planet-modal-title">{selectedPlanet.name}</h2>
-
                 <p className="planet-modal-description">
                   {selectedPlanet.description}
                 </p>
@@ -477,7 +444,6 @@ function App() {
                 </div>
 
                 <h3>Интересные факты</h3>
-
                 <ul>
                   {selectedPlanet.facts.map((fact, index) => (
                     <li key={index}>{fact}</li>
