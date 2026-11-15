@@ -1,13 +1,15 @@
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Telescope,
   Search,
   Orbit,
   Database,
   Sparkles,
-  Globe2
+  Globe2,
+  X,
+  ArrowUpRight
 } from "lucide-react";
 
 const originalTitle = "LIFE FINDER";
@@ -89,7 +91,14 @@ const planets = [
     distance: "Около 40 световых лет",
     description:
       "Одна из интересных планет системы TRAPPIST-1 для исследования потенциальной обитаемости.",
-    color: "planet-purple"
+    color: "planet-purple",
+    facts: [
+      "Находится в системе звезды TRAPPIST-1.",
+      "Её размер близок к размеру Земли.",
+      "Расположена в обитаемой зоне своей звезды."
+    ],
+    note:
+      "Нахождение в обитаемой зоне не означает, что на планете существует жизнь."
   },
   {
     name: "Proxima Centauri b",
@@ -97,7 +106,14 @@ const planets = [
     distance: "Около 4,2 светового года",
     description:
       "Известная экзопланета, вращающаяся вокруг ближайшей к Солнцу звезды.",
-    color: "planet-blue"
+    color: "planet-blue",
+    facts: [
+      "Обращается вокруг звезды Проксима Центавра.",
+      "Находится в нашей ближайшей звёздной системе.",
+      "Получает энергию от красного карлика."
+    ],
+    note:
+      "Условия на поверхности планеты пока неизвестны."
   },
   {
     name: "Kepler-186f",
@@ -105,13 +121,35 @@ const planets = [
     distance: "Около 500 световых лет",
     description:
       "Первая известная планета земного размера, обнаруженная в обитаемой зоне другой звезды.",
-    color: "planet-pink"
+    color: "planet-pink",
+    facts: [
+      "Обнаружена космическим телескопом Kepler.",
+      "Находится в системе красного карлика.",
+      "Её радиус близок к радиусу Земли."
+    ],
+    note:
+      "Наличие атмосферы и жидкой воды на поверхности не подтверждено."
   }
 ];
 
 function App() {
   const [activeTab, setActiveTab] = useState("home");
   const [planetName, setPlanetName] = useState("");
+  const [selectedPlanet, setSelectedPlanet] = useState(null);
+
+  useEffect(() => {
+    function handleEscape(event) {
+      if (event.key === "Escape") {
+        setSelectedPlanet(null);
+      }
+    }
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
 
   return (
     <main className="app">
@@ -208,6 +246,17 @@ function App() {
                 <motion.article
                   className="planet-card"
                   key={planet.name}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedPlanet(planet)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedPlanet(planet);
+                    }
+                  }}
+                  whileHover={{ y: -7 }}
+                  whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, y: 35 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -234,6 +283,11 @@ function App() {
                     <div className="planet-distance">
                       <Globe2 size={16} />
                       {planet.distance}
+                    </div>
+
+                    <div className="planet-open">
+                      Подробнее о планете
+                      <ArrowUpRight size={17} />
                     </div>
                   </div>
                 </motion.article>
@@ -275,6 +329,85 @@ function App() {
           </p>
         </section>
       )}
+
+      <AnimatePresence>
+        {selectedPlanet && (
+          <motion.div
+            className="planet-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPlanet(null)}
+          >
+            <motion.div
+              className="planet-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="planet-modal-title"
+              initial={{ opacity: 0, scale: 0.85, y: 25 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.25 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                className="planet-modal-close"
+                onClick={() => setSelectedPlanet(null)}
+                aria-label="Закрыть окно"
+              >
+                <X size={22} />
+              </button>
+
+              <div className="planet-modal-visual">
+                <div
+                  className={`card-planet ${selectedPlanet.color}`}
+                >
+                  <div className="card-planet-glow" />
+                </div>
+              </div>
+
+              <div className="planet-modal-content">
+                <span className="planet-type">
+                  {selectedPlanet.type}
+                </span>
+
+                <h2 id="planet-modal-title">
+                  {selectedPlanet.name}
+                </h2>
+
+                <p className="planet-modal-description">
+                  {selectedPlanet.description}
+                </p>
+
+                <div className="planet-modal-distance">
+                  <Globe2 size={18} />
+                  {selectedPlanet.distance}
+                </div>
+
+                <h3>Интересные факты</h3>
+
+                <ul>
+                  {selectedPlanet.facts.map((fact, index) => (
+                    <li key={index}>{fact}</li>
+                  ))}
+                </ul>
+
+                <div className="planet-science-note">
+                  <Sparkles size={17} />
+                  <p>{selectedPlanet.note}</p>
+                </div>
+
+                <button
+                  className="star-button planet-modal-button"
+                  onClick={() => setSelectedPlanet(null)}
+                >
+                  Закрыть
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <footer>
         LIFE FINDER · EXPLORE THE UNIVERSE
