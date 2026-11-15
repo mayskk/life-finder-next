@@ -1628,3 +1628,35 @@ body::after {
     animation: none !important;
   }
 }
+
+/* THREE DIFFERENT METEOR PATHS */
+
+.cosmic-meteors {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.meteor-one {
+  top: 8%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.meteor-two {
+  top: 35%;
+  left: 45%;
+  animation-delay: -4s;
+  animation-duration: 12s;
+  width: 110px;
+}
+
+.meteor-three {
+  top: 15%;
+  left: 75%;
+  animation-delay: -7s;
+  animation-duration: 14s;
+  width: 180px;
+}
