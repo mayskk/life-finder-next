@@ -3864,3 +3864,20 @@ footer::after {
     font-size: 15px;
   }
 }
+/* Центрирование текста главного экрана */
+.hero-content {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-content h1,
+.hero-content p {
+  text-align: center !important;
+  width: 100%;
+}
+
+.hero-split-v3 {
+  justify-content: center !important;
+  text-align: center !important;
+}
