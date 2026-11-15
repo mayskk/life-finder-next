@@ -1463,3 +1463,49 @@ body::after {
     animation: none;
   }
 }
+
+/* LIFE FINDER - NEBULA BACKGROUND */
+
+body {
+  background-color: #080518;
+}
+
+body {
+  background-image:
+    radial-gradient(
+      ellipse at 15% 25%,
+      rgba(105, 45, 190, 0.22),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 85% 35%,
+      rgba(35, 100, 190, 0.17),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 50% 85%,
+      rgba(125, 55, 190, 0.18),
+      transparent 50%
+    );
+  background-attachment: fixed;
+}
+
+body::after {
+  background-image:
+    radial-gradient(2px 2px at 10% 15%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 25% 65%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 30%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 55% 80%, #c7a2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 20%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 85% 55%, #d9c2ff 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 95% 85%, white 50%, transparent 100%);
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
+}
