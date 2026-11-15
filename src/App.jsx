@@ -26,11 +26,14 @@ function DecryptedTitle() {
 
     const interval = setInterval(() => {
       setTitle(
-        originalTitle.split("").map((letter, index) => {
-          if (index < iteration) return originalTitle[index];
-          if (letter === " ") return " ";
-          return characters[Math.floor(Math.random() * characters.length)];
-        }).join("")
+        originalTitle
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) return originalTitle[index];
+            if (letter === " ") return " ";
+            return characters[Math.floor(Math.random() * characters.length)];
+          })
+          .join("")
       );
 
       iteration += 0.35;
@@ -55,7 +58,7 @@ function DecryptedTitle() {
 function Particles() {
   return (
     <div className="particles">
-      {Array.from({ length: 65 }).map((_, index) => (
+      {Array.from({ length: 90 }).map((_, index) => (
         <span
           className="particle"
           key={index}
@@ -64,10 +67,64 @@ function Particles() {
             top: `${(index * 61) % 100}%`,
             animationDelay: `${(index % 8) * -0.7}s`,
             animationDuration: `${5 + (index % 6)}s`,
-            "--size": `${2 + (index % 3)}px`
+            "--size": `${2 + (index % 3)}px`,
+            "--drift": `${((index % 5) - 2) * 18}px`
           }}
         />
       ))}
+    </div>
+  );
+}
+
+function CosmicBackground() {
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handlePointer = (event) => {
+      setPointer({
+        x: (event.clientX / window.innerWidth - 0.5) * 2,
+        y: (event.clientY / window.innerHeight - 0.5) * 2
+      });
+    };
+
+    window.addEventListener("pointermove", handlePointer, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointer);
+    };
+  }, []);
+
+  return (
+    <div className="cosmic-background" aria-hidden="true">
+      <div className="cosmic-deep-glow" />
+
+      <div
+        className="cosmic-nebula cosmic-nebula-one"
+        style={{
+          transform: `translate(${pointer.x * -15}px, ${pointer.y * -12}px)`
+        }}
+      />
+
+      <div
+        className="cosmic-nebula cosmic-nebula-two"
+        style={{
+          transform: `translate(${pointer.x * 20}px, ${pointer.y * 15}px)`
+        }}
+      />
+
+      <div
+        className="cosmic-nebula cosmic-nebula-three"
+        style={{
+          transform: `translate(${pointer.x * -10}px, ${pointer.y * 18}px)`
+        }}
+      />
+
+      <div className="cosmic-light-beam" />
+      <div className="cosmic-stars">
+        <Particles />
+      </div>
+
+      <div className="cosmic-grid" />
     </div>
   );
 }
@@ -207,7 +264,7 @@ function App() {
 
   return (
     <main className="app">
-      <Particles />
+      <CosmicBackground />
 
       <header className="navbar">
         <div className="brand">
