@@ -72,6 +72,16 @@ function Particles() {
   );
 }
 
+function CosmicMeteors() {
+  return (
+    <div className="cosmic-meteors" aria-hidden="true">
+      <span className="cosmic-meteor meteor-one" />
+      <span className="cosmic-meteor meteor-two" />
+      <span className="cosmic-meteor meteor-three" />
+    </div>
+  );
+}
+
 function Planet() {
   return (
     <div className="planet-scene" aria-hidden="true">
@@ -154,6 +164,7 @@ function App() {
   return (
     <main className="app">
       <Particles />
+      <CosmicMeteors />
 
       <header className="navbar">
         <div className="brand">
