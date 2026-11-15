@@ -3632,3 +3632,41 @@ footer::after {
 .hero-split-v3 .hero-content-v3 .hero-stats {
   justify-content: center !important;
 }
+
+/* REMOVE ALL HERO CIRCLES AND ORBIT DECORATIONS */
+
+.hero-split-v3 .hero-planet-side-v3,
+.hero-split-v3 .planet-scene-v3,
+.hero-split-v3 .planet-body-v3,
+.hero-split-v3 .planet-ring-v3,
+.hero-split-v3 .planet-orbit-v3,
+.hero-split-v3 .planet-orbit-dot-v3,
+.hero-split-v3 .planet-atmosphere-v3,
+.hero-split-v3 .planet-clouds-v3,
+.hero-split-v3 .planet-surface-v3,
+.hero-split-v3 .planet-light-v3,
+.hero-split-v3 .planet-shadow-v3,
+.hero-split-v3 .hero-decoration,
+.hero-split-v3::before,
+.hero-split-v3::after,
+.hero-split-v3 .hero-layout-v3::before,
+.hero-split-v3 .hero-layout-v3::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.hero-split-v3 .hero-layout-v3 {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  grid-template-columns: none !important;
+}
+
+.hero-split-v3 .hero-content-v3 {
+  margin: 0 auto !important;
+  max-width: 850px !important;
+  text-align: center !important;
+}
