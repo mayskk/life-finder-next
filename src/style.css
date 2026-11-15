@@ -1081,3 +1081,185 @@ footer {
     margin-top: 20px;
   }
 }
+
+/* PLANET INFORMATION MODAL */
+
+.planet-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(3, 2, 18, 0.82);
+  backdrop-filter: blur(12px);
+  overflow-y: auto;
+}
+
+.planet-modal {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  border: 1px solid rgba(185, 154, 255, 0.35);
+  border-radius: 25px;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(113, 65, 190, 0.25),
+      transparent 45%
+    ),
+    #100c29;
+  box-shadow: 0 0 70px rgba(130, 75, 220, 0.25);
+}
+
+.planet-modal-close {
+  position: absolute;
+  z-index: 5;
+  top: 15px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: white;
+  background: rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.planet-modal-close:hover {
+  background: rgba(180,130,255,0.3);
+}
+
+.planet-modal-visual {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle,
+    rgba(126, 78, 210, 0.25),
+    transparent 70%
+  );
+}
+
+.planet-modal-visual .card-planet {
+  width: 175px;
+  height: 175px;
+  animation: cardPlanetFloat 5s ease-in-out infinite;
+}
+
+.planet-modal-content {
+  padding: 55px 30px 30px;
+}
+
+.planet-modal-content h2 {
+  color: white;
+  font-size: 27px;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+
+.planet-modal-description {
+  color: #b8b1d1;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.planet-modal-distance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  color: #d6c4ff;
+  font-size: 13px;
+}
+
+.planet-modal-content h3 {
+  color: white;
+  font-size: 17px;
+  margin: 25px 0 15px;
+}
+
+.planet-modal-content ul {
+  padding-left: 20px;
+  color: #b8b1d1;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.planet-modal-content li {
+  margin-bottom: 8px;
+}
+
+.planet-science-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 14px;
+  border: 1px solid rgba(180,140,255,0.2);
+  border-radius: 12px;
+  background: rgba(130,90,200,0.12);
+  color: #cbb5ff;
+}
+
+.planet-science-note p {
+  margin: 0;
+  color: #c5badf;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.planet-modal-button {
+  margin-top: 22px;
+}
+
+.planet-open {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(180,140,255,0.18);
+  color: #c7aaff;
+  font-size: 13px;
+}
+
+.planet-card {
+  cursor: pointer;
+}
+
+.planet-card:focus-visible {
+  outline: 2px solid #b99aff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .planet-modal {
+    grid-template-columns: 1fr;
+  }
+
+  .planet-modal-visual {
+    min-height: 190px;
+  }
+
+  .planet-modal-visual .card-planet {
+    width: 125px;
+    height: 125px;
+  }
+
+  .planet-modal-content {
+    padding: 25px;
+  }
+
+  .planet-modal-content h2 {
+    font-size: 23px;
+  }
+}
