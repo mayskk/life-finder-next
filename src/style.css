@@ -3881,3 +3881,35 @@ footer::after {
   justify-content: center !important;
   text-align: center !important;
 }
+/* LIFE FINDER — FIX HERO ALIGNMENT */
+
+.hero,
+.hero-split-v3,
+.hero-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-content {
+  width: 100% !important;
+  max-width: 900px !important;
+}
+
+.hero-content h1,
+.hero-content p,
+.hero-content .hero-label {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-content p {
+  max-width: 700px !important;
+}
