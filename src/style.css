@@ -3670,3 +3670,32 @@ footer::after {
   max-width: 850px !important;
   text-align: center !important;
 }
+
+/* CENTER HERO CONTENT */
+
+.hero-clean-v4 .hero-layout-v3 {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-clean-v4 .hero-content-v3 {
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+.hero-clean-v4 .hero-subtitle,
+.hero-clean-v4 .hero-description {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.hero-clean-v4 .hero-stats {
+  justify-content: center !important;
+}
