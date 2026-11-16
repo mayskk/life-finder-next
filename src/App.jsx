@@ -946,6 +946,692 @@ function CosmicQuiz() {
   );
 }
 
+
+// Данные интерактивного путешествия по Млечному Пути
+const journeyDestinations = [
+  {
+    id: "solar",
+    name: "Солнечная система",
+    subtitle: "НАШ КОСМИЧЕСКИЙ ДОМ",
+    distance: "0 световых лет",
+    kind: "Звёздная система",
+    description: "Наша звезда — Солнце — и восемь планет, которые обращаются вокруг неё. Отсюда начинается наше путешествие по галактике.",
+    facts: [
+      "Солнечная система находится в рукаве Ориона Млечного Пути.",
+      "Солнце — звезда примерно среднего размера.",
+      "Солнечная система обращается вокруг центра галактики."
+    ],
+    color: "journey-sun",
+    position: { left: "49%", top: "52%" },
+    tag: "СТАРТ"
+  },
+  {
+    id: "proxima",
+    name: "Proxima Centauri",
+    subtitle: "БЛИЖАЙШАЯ ЗВЕЗДА",
+    distance: "Около 4,24 светового года",
+    kind: "Звезда и её планетная система",
+    description: "Проксима Центавра — ближайшая к Солнцу известная звезда. В её системе обнаружена планета Proxima Centauri b.",
+    facts: [
+      "Проксима Центавра — красный карлик.",
+      "Proxima Centauri b обращается вокруг своей звезды примерно за 11 земных суток.",
+      "Реальные условия на поверхности этой планеты пока неизвестны."
+    ],
+    color: "journey-red",
+    position: { left: "32%", top: "35%" },
+    tag: "4,24 СВ. ГОДА"
+  },
+  {
+    id: "barnard",
+    name: "Звезда Барнарда",
+    subtitle: "БЫСТРО ДВИЖУЩАЯСЯ ЗВЕЗДА",
+    distance: "Около 6 световых лет",
+    kind: "Красный карлик",
+    description: "Звезда Барнарда — одна из ближайших к Солнцу одиночных звёзд. Она известна своим быстрым видимым движением по небу.",
+    facts: [
+      "Это красный карлик значительно меньше Солнца.",
+      "Звезда Барнарда находится примерно в шести световых годах от нас.",
+      "У неё обнаружены планеты-кандидаты и подтверждённые планетные объекты."
+    ],
+    color: "journey-orange",
+    position: { left: "65%", top: "29%" },
+    tag: "≈ 6 СВ. ЛЕТ"
+  },
+  {
+    id: "trappist",
+    name: "TRAPPIST-1",
+    subtitle: "СИСТЕМА СЕМЬИ ПЛАНЕТ",
+    distance: "Около 40 световых лет",
+    kind: "Планетная система",
+    description: "Ультрахолодный красный карлик TRAPPIST-1 окружён семью известными планетами примерно земного размера.",
+    facts: [
+      "Все семь известных планет системы обращаются очень близко к своей звезде.",
+      "Некоторые планеты системы изучают как интересные объекты для исследований атмосфер.",
+      "Потенциальная обитаемость не подтверждена обнаружением жизни."
+    ],
+    color: "journey-purple",
+    position: { left: "24%", top: "67%" },
+    tag: "≈ 40 СВ. ЛЕТ"
+  },
+  {
+    id: "kepler",
+    name: "Kepler-186",
+    subtitle: "ДАЛЁКАЯ ПЛАНЕТНАЯ СИСТЕМА",
+    distance: "Около 500 световых лет",
+    kind: "Планетная система",
+    description: "В этой системе находится Kepler-186f — первая обнаруженная планета земного размера в обитаемой зоне другой звезды.",
+    facts: [
+      "Звезда Kepler-186 — красный карлик.",
+      "Kepler-186f совершает один оборот вокруг звезды примерно за 130 земных суток.",
+      "Наличие подходящей атмосферы и жизни на планете не установлено."
+    ],
+    color: "journey-blue",
+    position: { left: "75%", top: "70%" },
+    tag: "≈ 500 СВ. ЛЕТ"
+  },
+  {
+    id: "center",
+    name: "Центр Млечного Пути",
+    subtitle: "СЕРДЦЕ НАШЕЙ ГАЛАКТИКИ",
+    distance: "Около 26 000 световых лет",
+    kind: "Галактический центр",
+    description: "В центральной области Млечного Пути находится Стрелец A* — сверхмассивная чёрная дыра, окружённая плотной областью звёзд и газа.",
+    facts: [
+      "Стрелец A* находится в направлении созвездия Стрельца.",
+      "Её масса составляет около четырёх миллионов масс Солнца.",
+      "Наблюдения звёзд рядом с центром помогли подтвердить существование сверхмассивного компактного объекта."
+    ],
+    color: "journey-gold",
+    position: { left: "52%", top: "16%" },
+    tag: "≈ 26 000 СВ. ЛЕТ"
+  }
+];
+
+function CosmicJourney() {
+  const [selectedId, setSelectedId] = useState("solar");
+  const [showAll, setShowAll] = useState(false);
+  const selected = journeyDestinations.find((place) => place.id === selectedId) || journeyDestinations[0];
+
+  return (
+    <section className="cosmic-journey">
+      <div className="journey-hero">
+        <div className="journey-hero-orb" aria-hidden="true" />
+        <span className="journey-overline">INTERACTIVE GALACTIC EXPLORATION</span>
+        <h1>COSMIC JOURNEY</h1>
+        <p>
+          Начни путешествие из Солнечной системы и открывай удивительные
+          объекты нашей галактики.
+        </p>
+        <div className="journey-hero-meta">
+          <span><Orbit size={15} /> МЛЕЧНЫЙ ПУТЬ</span>
+          <span><Telescope size={15} /> 6 ТОЧЕК ИССЛЕДОВАНИЯ</span>
+          <span><Sparkles size={15} /> ВЫБИРАЙ И ИЗУЧАЙ</span>
+        </div>
+      </div>
+
+      <div className="journey-layout">
+        <div className="journey-map-panel">
+          <div className="journey-panel-heading">
+            <div>
+              <span>GALACTIC NAVIGATION / 01</span>
+              <h2>Карта путешествия</h2>
+            </div>
+            <span className="journey-map-status"><i /> SYSTEM ONLINE</span>
+          </div>
+
+          <div className="journey-map" aria-label="Схематическая карта объектов Млечного Пути">
+            <div className="journey-map-stars" />
+            <div className="journey-galaxy-arm journey-arm-one" />
+            <div className="journey-galaxy-arm journey-arm-two" />
+            <div className="journey-galaxy-arm journey-arm-three" />
+            <div className="journey-galaxy-core" />
+            <div className="journey-map-ring journey-ring-one" />
+            <div className="journey-map-ring journey-ring-two" />
+            <span className="journey-map-label journey-label-core">GALACTIC CORE</span>
+            <span className="journey-map-label journey-label-sun">ORION ARM</span>
+
+            {journeyDestinations.map((place, index) => (
+              <button
+                key={place.id}
+                className={`journey-map-point ${selectedId === place.id ? "active" : ""} ${place.color}`}
+                style={{ left: place.position.left, top: place.position.top }}
+                onClick={() => setSelectedId(place.id)}
+                aria-label={`Открыть: ${place.name}`}
+                aria-pressed={selectedId === place.id}
+              >
+                <span className="journey-point-pulse" />
+                <span className="journey-point-core" />
+                <span className="journey-point-label">{place.name}</span>
+              </button>
+            ))}
+            <div className="journey-map-legend">
+              <span><i className="legend-star" /> Выбери объект на карте</span>
+              <span>СХЕМА · НЕ В МАСШТАБЕ</span>
+            </div>
+          </div>
+
+          <div className="journey-destination-strip">
+            {journeyDestinations.map((place, index) => (
+              <button
+                key={place.id}
+                className={`journey-destination-chip ${selectedId === place.id ? "active" : ""}`}
+                onClick={() => setSelectedId(place.id)}
+              >
+                <span>0{index + 1}</span>
+                {place.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <motion.aside
+          className="journey-detail-panel"
+          key={selected.id}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className={`journey-planet-art ${selected.color}`}>
+            <div className="journey-planet-halo" />
+            <div className="journey-planet-sphere" />
+            <span className="journey-art-coordinate">LF / {selected.id.toUpperCase()}</span>
+          </div>
+          <div className="journey-detail-content">
+            <span className="journey-detail-overline">{selected.subtitle}</span>
+            <h2>{selected.name}</h2>
+            <span className="journey-detail-kind">{selected.kind}</span>
+
+            <div className="journey-distance">
+              <Orbit size={18} />
+              <div>
+                <small>РАССТОЯНИЕ ОТ СОЛНЦА</small>
+                <strong>{selected.distance}</strong>
+              </div>
+            </div>
+
+            <p className="journey-description">{selected.description}</p>
+            <h3><Sparkles size={17} /> ИНТЕРЕСНЫЕ ФАКТЫ</h3>
+            <ul className="journey-facts">
+              {selected.facts.map((fact, index) => (
+                <li key={index}>{fact}</li>
+              ))}
+            </ul>
+
+            <div className="journey-science-note">
+              <BookOpen size={17} />
+              <p>Космическая карта схематическая: расположение точек не показывает реальные расстояния и направления.</p>
+            </div>
+
+            <div className="journey-detail-actions">
+              <button
+                className="journey-next-button"
+                onClick={() => {
+                  const currentIndex = journeyDestinations.findIndex((place) => place.id === selectedId);
+                  setSelectedId(journeyDestinations[(currentIndex + 1) % journeyDestinations.length].id);
+                }}
+              >
+                Следующая точка <ChevronRight size={18} />
+              </button>
+              <button className="journey-list-button" onClick={() => setShowAll((value) => !value)}>
+                {showAll ? "Скрыть список" : "Все объекты"}
+              </button>
+            </div>
+          </div>
+        </motion.aside>
+      </div>
+
+      {showAll && (
+        <motion.div
+          className="journey-all-destinations"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+        >
+          <div className="journey-all-heading">
+            <span>YOUR DISCOVERY LOG</span>
+            <h2>Все точки маршрута</h2>
+          </div>
+          <div className="journey-all-grid">
+            {journeyDestinations.map((place, index) => (
+              <button
+                key={place.id}
+                className={`journey-all-card ${selectedId === place.id ? "active" : ""}`}
+                onClick={() => {
+                  setSelectedId(place.id);
+                  setShowAll(false);
+                }}
+              >
+                <span className="journey-card-number">0{index + 1}</span>
+                <strong>{place.name}</strong>
+                <small>{place.distance}</small>
+                <span className="journey-card-open">ИССЛЕДОВАТЬ <ArrowUpRight size={14} /></span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </section>
+  );
+}
+
+// Стили COSMIC JOURNEY
+const journeyStyles = `
+.cosmic-journey {
+  width: min(1240px, calc(100% - 40px));
+  margin: 42px auto 85px;
+  color: #f5f3ff;
+}
+.journey-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(42px, 7vw, 78px) 24px;
+  text-align: center;
+  border: 1px solid rgba(167,139,250,.22);
+  border-radius: 30px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(117,79,220,.28), transparent 62%), linear-gradient(145deg, rgba(24,23,58,.92), rgba(8,10,30,.9));
+  box-shadow: 0 25px 80px rgba(0,0,0,.2);
+}
+.journey-hero-orb {
+  position: absolute;
+  z-index: -1;
+  width: 260px;
+  height: 260px;
+  left: calc(50% - 130px);
+  top: -205px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  filter: blur(85px);
+  opacity: .35;
+}
+.journey-overline, .journey-panel-heading > div > span, .journey-all-heading > span {
+  color: #a99aff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.6px;
+}
+.journey-hero h1 {
+  margin: 15px 0 12px;
+  font-size: clamp(36px, 7vw, 68px);
+  line-height: 1.05;
+  letter-spacing: 2px;
+  font-weight: 900;
+  background: linear-gradient(100deg, #fff, #b7a5ff, #7dd3fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.journey-hero > p {
+  max-width: 620px;
+  margin: 0 auto;
+  color: #b9b6d2;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.journey-hero-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 27px;
+}
+.journey-hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #c9c4e5;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.journey-hero-meta svg { color: #a78bfa; }
+.journey-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(310px, .8fr);
+  gap: 18px;
+  margin-top: 20px;
+  align-items: stretch;
+}
+.journey-map-panel, .journey-detail-panel, .journey-all-destinations {
+  min-width: 0;
+  border: 1px solid rgba(167,139,250,.19);
+  border-radius: 23px;
+  background: rgba(13,15,38,.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.17);
+}
+.journey-map-panel { padding: 22px; }
+.journey-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.journey-panel-heading h2, .journey-all-heading h2 {
+  margin: 7px 0 0;
+  font-size: 21px;
+}
+.journey-map-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #a8a4c1;
+  font-size: 9px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.journey-map-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  box-shadow: 0 0 12px #6ee7b7;
+}
+.journey-map {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(167,139,250,.13);
+  border-radius: 18px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(74,52,145,.26), transparent 45%), radial-gradient(ellipse at 20% 80%, rgba(28,88,145,.15), transparent 38%), #080b20;
+}
+.journey-map-stars {
+  position: absolute;
+  inset: 0;
+  opacity: .72;
+  background-image: radial-gradient(1px 1px at 12% 18%, #fff 99%, transparent), radial-gradient(1px 1px at 83% 22%, #fff 99%, transparent), radial-gradient(2px 2px at 65% 83%, #c4b5fd 99%, transparent), radial-gradient(1px 1px at 28% 72%, #fff 99%, transparent), radial-gradient(1px 1px at 92% 61%, #fff 99%, transparent), radial-gradient(1px 1px at 48% 13%, #fff 99%, transparent), radial-gradient(1px 1px at 8% 53%, #fff 99%, transparent), radial-gradient(1px 1px at 74% 48%, #fff 99%, transparent);
+  background-size: 170px 150px, 190px 170px, 210px 190px, 160px 180px, 200px 160px, 180px 190px, 190px 180px, 220px 200px;
+}
+.journey-galaxy-arm {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 82%;
+  height: 27%;
+  border: 1px solid rgba(171,145,255,.2);
+  border-radius: 50%;
+  transform: translate(-50%,-50%) rotate(-28deg);
+  box-shadow: 0 0 28px rgba(130,100,240,.12), inset 0 0 30px rgba(130,100,240,.08);
+}
+.journey-arm-two { width: 76%; height: 21%; transform: translate(-50%,-50%) rotate(34deg); border-color: rgba(99,190,255,.17); }
+.journey-arm-three { width: 62%; height: 17%; transform: translate(-50%,-50%) rotate(76deg); border-color: rgba(210,165,255,.12); }
+.journey-galaxy-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, #fff 0%, #d7c8ff 8%, rgba(151,113,255,.5) 28%, rgba(126,91,230,.08) 70%, transparent 72%);
+  filter: drop-shadow(0 0 24px rgba(174,143,255,.8));
+}
+.journey-map-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44%;
+  height: 44%;
+  border: 1px dashed rgba(178,160,255,.2);
+  border-radius: 50%;
+  transform: translate(-50%,-50%) rotate(-25deg);
+}
+.journey-ring-two { width: 68%; height: 68%; transform: translate(-50%,-50%) rotate(24deg); border-color: rgba(104,194,255,.14); }
+.journey-map-label {
+  position: absolute;
+  color: rgba(198,185,255,.55);
+  font-size: 8px;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+.journey-label-core { left: 54%; top: 47%; }
+.journey-label-sun { left: 9%; top: 88%; }
+.journey-map-point {
+  position: absolute;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%,-50%);
+}
+.journey-point-core {
+  position: absolute;
+  inset: 6px;
+  border: 2px solid #d9d0ff;
+  border-radius: 50%;
+  background: #9b83f6;
+  box-shadow: 0 0 12px currentColor;
+}
+.journey-point-pulse {
+  position: absolute;
+  inset: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: .55;
+  animation: journey-pulse 2.4s ease-out infinite;
+}
+.journey-map-point.active .journey-point-core { inset: 4px; background: #fff; box-shadow: 0 0 20px #c4b5fd, 0 0 35px currentColor; }
+.journey-point-label {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  width: max-content;
+  max-width: 145px;
+  padding: 5px 8px;
+  color: #e9e5ff;
+  border: 1px solid rgba(167,139,250,.22);
+  border-radius: 7px;
+  background: rgba(9,11,30,.82);
+  font-size: 9px;
+  text-align: left;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.journey-map-point:nth-of-type(odd) .journey-point-label { left: auto; right: 18px; }
+.journey-map-point.active .journey-point-label { color: #fff; border-color: rgba(196,181,253,.7); background: rgba(89,65,160,.78); }
+.journey-sun .journey-point-core { background: #ffe6a1; border-color: #fff0c4; }
+.journey-red .journey-point-core { background: #ff9b91; border-color: #ffd0c9; }
+.journey-orange .journey-point-core { background: #ffbd82; border-color: #ffe0bf; }
+.journey-purple .journey-point-core { background: #bd9bff; border-color: #e0d1ff; }
+.journey-blue .journey-point-core { background: #83d7ff; border-color: #d0f1ff; }
+.journey-gold .journey-point-core { background: #ffe08a; border-color: #fff2c4; }
+.journey-map-legend {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #9e9bb9;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.journey-map-legend span:first-child { display: flex; align-items: center; gap: 7px; }
+.legend-star { width: 7px; height: 7px; border-radius: 50%; background: #c4b5fd; box-shadow: 0 0 8px #c4b5fd; }
+.journey-destination-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+.journey-destination-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  color: #bdb8d6;
+  border: 1px solid rgba(167,139,250,.14);
+  border-radius: 9px;
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  transition: .2s ease;
+}
+.journey-destination-chip > span { color: #8e80c8; font-size: 9px; }
+.journey-destination-chip:hover, .journey-destination-chip.active { color: #fff; border-color: rgba(167,139,250,.55); background: rgba(139,92,246,.13); }
+.journey-detail-panel { overflow: hidden; }
+.journey-planet-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 205px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 110%, rgba(112,79,210,.28), transparent 65%), linear-gradient(145deg, rgba(35,31,75,.7), rgba(9,12,32,.8));
+}
+.journey-planet-halo {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(196,181,253,.13);
+  border-radius: 50%;
+  box-shadow: 0 0 45px rgba(139,92,246,.12), inset 0 0 35px rgba(139,92,246,.08);
+}
+.journey-planet-sphere {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff2c4, #e9a85b 28%, #9251a7 58%, #28214e 82%);
+  box-shadow: inset -18px -12px 28px rgba(0,0,0,.55), 0 0 45px rgba(173,139,255,.35);
+}
+.journey-planet-art.journey-red .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #ffd2b8, #e36e65 32%, #792f61 68%, #211c49 88%); }
+.journey-planet-art.journey-orange .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #ffe3b9, #e99a58 32%, #8d4b45 68%, #211c49 88%); }
+.journey-planet-art.journey-purple .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #f4d7ff, #b58af1 32%, #5a4e9c 68%, #1c2049 88%); }
+.journey-planet-art.journey-blue .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #d8f8ff, #69b9df 32%, #3b558e 68%, #171d42 88%); }
+.journey-planet-art.journey-gold .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #fff4c8, #e5bc69 32%, #93623f 68%, #211c49 88%); }
+.journey-planet-art.journey-sun .journey-planet-sphere { background: radial-gradient(circle at 32% 28%, #fff9ce, #ffd36a 36%, #e98735 68%, #8f3d46 90%); box-shadow: 0 0 65px rgba(255,177,76,.45), inset -18px -12px 28px rgba(0,0,0,.35); }
+.journey-art-coordinate { position: absolute; right: 14px; bottom: 12px; color: rgba(211,202,255,.55); font-size: 8px; letter-spacing: 1.5px; }
+.journey-detail-content { padding: 22px; }
+.journey-detail-overline { color: #a99aff; font-size: 9px; font-weight: 800; letter-spacing: 1.7px; }
+.journey-detail-content h2 { margin: 8px 0 5px; font-size: clamp(22px, 3vw, 29px); }
+.journey-detail-kind { color: #aaa8c5; font-size: 11px; }
+.journey-distance {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 19px 0;
+  padding: 12px;
+  border: 1px solid rgba(167,139,250,.16);
+  border-radius: 12px;
+  background: rgba(139,92,246,.07);
+  color: #b9a8ff;
+}
+.journey-distance div { display: flex; flex-direction: column; gap: 4px; }
+.journey-distance small { color: #9994b7; font-size: 8px; letter-spacing: 1px; }
+.journey-distance strong { color: #eeeaff; font-size: 12px; }
+.journey-description { color: #c1bdd7; font-size: 12px; line-height: 1.7; }
+.journey-detail-content h3 { display: flex; align-items: center; gap: 8px; margin: 21px 0 10px; color: #b9a8ff; font-size: 10px; letter-spacing: 1.4px; }
+.journey-facts { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.journey-facts li { position: relative; padding-left: 15px; color: #bdb9d3; font-size: 11px; line-height: 1.6; }
+.journey-facts li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: #a78bfa; box-shadow: 0 0 8px #a78bfa; }
+.journey-science-note { display: flex; align-items: flex-start; gap: 9px; margin-top: 17px; padding: 11px; border: 1px solid rgba(103,215,255,.15); border-radius: 11px; background: rgba(56,189,248,.045); color: #8bdcff; }
+.journey-science-note svg { flex: 0 0 auto; margin-top: 2px; }
+.journey-science-note p { margin: 0; color: #aebed0; font-size: 10px; line-height: 1.6; }
+.journey-detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.journey-next-button, .journey-list-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid rgba(196,181,253,.32);
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(110deg, #7656d9, #5143a7);
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+}
+.journey-list-button { color: #c9c4e5; border-color: rgba(167,139,250,.2); background: rgba(255,255,255,.035); }
+.journey-all-destinations { margin-top: 18px; padding: 24px; }
+.journey-all-heading { margin-bottom: 17px; }
+.journey-all-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+.journey-all-card { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; padding: 16px; color: #eeeaff; text-align: left; border: 1px solid rgba(167,139,250,.16); border-radius: 13px; background: rgba(255,255,255,.025); cursor: pointer; transition: .2s ease; }
+.journey-all-card:hover, .journey-all-card.active { border-color: rgba(167,139,250,.55); background: rgba(139,92,246,.1); transform: translateY(-2px); }
+.journey-card-number { color: #9b8bdf; font-size: 9px; letter-spacing: 1px; }
+.journey-all-card strong { font-size: 13px; }
+.journey-all-card small { color: #aaa8c5; font-size: 10px; }
+.journey-card-open { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; color: #b9a8ff; font-size: 8px; letter-spacing: 1px; }
+@keyframes journey-pulse { 0% { transform: scale(.65); opacity: .65; } 100% { transform: scale(1.8); opacity: 0; } }
+@media (max-width: 900px) {
+  .journey-layout { grid-template-columns: 1fr; }
+  .journey-detail-panel { display: grid; grid-template-columns: minmax(180px,.65fr) minmax(0,1fr); }
+  .journey-planet-art { min-height: 100%; }
+}
+@media (max-width: 620px) {
+  .cosmic-journey { width: min(100% - 22px, 1240px); margin-top: 25px; }
+  .journey-hero { padding: 42px 16px; border-radius: 22px; }
+  .journey-hero-meta { gap: 10px 14px; }
+  .journey-map-panel { padding: 13px; }
+  .journey-map { min-height: 390px; }
+  .journey-point-label { max-width: 105px; font-size: 8px; }
+  .journey-map-legend { font-size: 7px; }
+  .journey-detail-panel { display: block; }
+  .journey-planet-art { min-height: 190px; }
+  .journey-all-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-point-pulse { animation: none; }
+  .journey-destination-chip, .journey-all-card { transition: none; }
+}
+.journey-home-promo {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(190px,.72fr) minmax(0,1.3fr);
+  align-items: center;
+  gap: clamp(20px,5vw,55px);
+  width: min(1100px,calc(100% - 40px));
+  margin: 30px auto 35px;
+  padding: clamp(22px,4vw,38px);
+  overflow: hidden;
+  border: 1px solid rgba(167,139,250,.22);
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 15% 50%,rgba(116,78,220,.22),transparent 55%),rgba(13,15,38,.78);
+  box-shadow: 0 20px 60px rgba(0,0,0,.16);
+}
+.journey-home-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 190px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at center,rgba(94,68,176,.2),transparent 68%),#090c22;
+}
+.journey-home-galaxy {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%,#fff 0%,#c8b4ff 3%,rgba(160,125,255,.65) 10%,rgba(115,87,210,.16) 28%,transparent 65%);
+  box-shadow: 0 0 55px rgba(151,119,255,.35);
+}
+.journey-home-orbit {
+  position: absolute;
+  width: 175px;
+  height: 65px;
+  border: 1px solid rgba(185,160,255,.35);
+  border-radius: 50%;
+  transform: rotate(-28deg);
+}
+.journey-home-orbit-two { width: 190px; height: 85px; transform: rotate(38deg); border-color: rgba(103,215,255,.25); }
+.journey-home-copy > span { color: #a99aff; font-size: 10px; font-weight: 800; letter-spacing: 2px; }
+.journey-home-copy h2 { margin: 10px 0; color: #f5f3ff; font-size: clamp(22px,3vw,32px); line-height: 1.25; }
+.journey-home-copy p { max-width: 570px; margin: 0 0 20px; color: #b9b6d2; font-size: 13px; line-height: 1.7; }
+@media(max-width:650px) {
+  .journey-home-promo { grid-template-columns: 1fr; width: min(100% - 24px,1100px); }
+  .journey-home-visual { min-height: 150px; }
+}
+`;
+
 // Стили COSMIC QUIZ
 
 const quizStyles = `
@@ -1528,7 +2214,7 @@ function App() {
 
   return (
     <main className="app">
-      <style>{quizStyles}</style>
+      <style>{quizStyles + journeyStyles}</style>
 
       <CosmicBackground />
 
@@ -1558,6 +2244,13 @@ function App() {
             onClick={() => navigate("catalog")}
           >
             Каталог
+          </button>
+
+          <button
+            className={activeTab === "journey" ? "active" : ""}
+            onClick={() => navigate("journey")}
+          >
+            COSMIC JOURNEY
           </button>
 
           <button
@@ -1681,6 +2374,27 @@ function App() {
             </div>
           </section>
 
+          <section className="journey-home-promo">
+            <div className="journey-home-visual">
+              <div className="journey-home-galaxy" />
+              <span className="journey-home-orbit journey-home-orbit-one" />
+              <span className="journey-home-orbit journey-home-orbit-two" />
+            </div>
+            <div className="journey-home-copy">
+              <span>YOUR GALACTIC ADVENTURE</span>
+              <h2>Готов отправиться за пределы Солнечной системы?</h2>
+              <p>
+                Исследуй звёздные системы, открывай далёкие миры
+                и узнавай удивительные факты о Млечном Пути.
+              </p>
+              <button className="star-button" onClick={() => navigate("journey")}>
+                <Orbit size={18} />
+                Начать COSMIC JOURNEY
+                <ArrowUpRight size={17} />
+              </button>
+            </div>
+          </section>
+
           <section className="quiz-home-promo">
             <div className="quiz-home-promo-icon">
               <Brain size={32} />
@@ -1728,6 +2442,8 @@ function App() {
           <p>Здесь разместим каталог планет NASA.</p>
         </section>
       )}
+
+      {activeTab === "journey" && <CosmicJourney />}
 
       {activeTab === "quiz" && <CosmicQuiz />}
 
@@ -1823,5 +2539,6 @@ function App() {
     </main>
   );
 }
+
 
 export default App;
