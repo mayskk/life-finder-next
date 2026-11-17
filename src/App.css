@@ -349,3 +349,86 @@ button:focus-visible, a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* LIFE FINDER — visual refinement: quieter nebula, clearer stars, richer glass */
+.space-background {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(76, 48, 112, .075), transparent 58%),
+    linear-gradient(180deg, rgba(8, 5, 16, .04), rgba(8, 5, 16, .2));
+}
+.particle-canvas { opacity: .48; }
+.space-star {
+  background: #eee5ff;
+  box-shadow: 0 0 5px 1px rgba(195, 164, 255, .42);
+  animation-duration: 5.8s;
+}
+.nebula { opacity: .075; filter: blur(92px); }
+.nebula-one { background: #7135c4; }
+.nebula-two { background: #a84baf; }
+
+.lf-app {
+  background:
+    radial-gradient(ellipse at 14% 15%, rgba(82, 42, 132, .16), transparent 36%),
+    radial-gradient(ellipse at 86% 38%, rgba(102, 44, 126, .12), transparent 34%),
+    linear-gradient(135deg, #090611 0%, #100a1b 52%, #080510 100%);
+}
+.hero-visual::before {
+  background: radial-gradient(circle, rgba(133, 79, 195, .15), rgba(100, 48, 145, .045) 44%, transparent 70%);
+  filter: blur(16px);
+}
+.planet-glow { background: rgba(133, 76, 210, .16); filter: blur(55px); }
+.hero-planet {
+  box-shadow:
+    inset -30px -24px 48px rgba(4, 2, 14, .86),
+    inset 10px 9px 25px rgba(255,255,255,.23),
+    0 0 38px rgba(166, 112, 220, .32);
+}
+.orbit { border-color: rgba(211, 172, 255, .15); }
+.orbit-small { border-color: rgba(241, 153, 237, .13); }
+
+.journey-map, .destination-card, .quiz-card, .detector-card {
+  border-color: rgba(213, 178, 255, .16);
+  box-shadow:
+    0 22px 70px rgba(0,0,0,.24),
+    inset 0 1px rgba(255,255,255,.075),
+    0 0 28px rgba(166, 91, 255, .11);
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+.journey-map:hover, .destination-card:hover, .quiz-card:hover, .detector-card:hover {
+  border-color: rgba(213, 178, 255, .27);
+  box-shadow:
+    0 26px 78px rgba(0,0,0,.3),
+    inset 0 1px rgba(255,255,255,.09),
+    0 0 38px rgba(166, 91, 255, .16);
+}
+.destination-card { background: linear-gradient(145deg, rgba(39, 24, 59, .72), rgba(13, 9, 23, .82)); }
+.quiz-options button { backdrop-filter: blur(8px); }
+.quiz-options button:active { transform: scale(.99); }
+.criteria-grid > div {
+  transition: transform .25s ease, border-color .25s ease, background .25s ease;
+}
+.criteria-grid > div:hover {
+  transform: translateY(-4px);
+  border-color: rgba(207, 158, 255, .34);
+  background: rgba(173, 112, 232, .075);
+}
+.primary-button, .secondary-button { position: relative; overflow: hidden; }
+.primary-button::after, .secondary-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.11) 48%, transparent 76%);
+  transform: translateX(-130%);
+  transition: transform .65s ease;
+  pointer-events: none;
+}
+.primary-button:hover::after, .secondary-button:hover::after { transform: translateX(130%); }
+.lf-footer { color: #a99ab9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .space-star, .nebula, .hero-visual::before, .hero-planet, .planet-moon, .orbit {
+    animation: none !important;
+  }
+  .primary-button::after, .secondary-button::after { display: none; }
+}
