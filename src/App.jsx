@@ -91,7 +91,7 @@ const quizQuestions = [
   }
 ];
 
-const stars = Array.from({ length: 65 }, (_, i) => ({
+const stars = Array.from({ length: 150 }, (_, i) => ({
   left: `${(i * 37 + 13) % 100}%`,
   top: `${(i * 61 + 7) % 100}%`,
   delay: `${(i % 8) * 0.4}s`,
@@ -125,14 +125,14 @@ function ParticleField() {
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-      const amount = Math.min(115, Math.max(48, Math.round((width * height) / 11500)));
+      const amount = Math.min(82, Math.max(42, Math.round((width * height) / 16500)));
       particles = Array.from({ length: amount }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.28,
         vy: (Math.random() - 0.5) * 0.28,
-        radius: Math.random() * 1.7 + 0.55,
-        alpha: Math.random() * 0.55 + 0.2,
+        radius: Math.random() * 1.1 + 0.4,
+        alpha: Math.random() * 0.35 + 0.28,
         phase: Math.random() * Math.PI * 2
       }));
     };
@@ -177,8 +177,8 @@ function ParticleField() {
         context.beginPath();
         context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         context.fillStyle = `rgba(205, 169, 255, ${particle.alpha * pulse})`;
-        context.shadowBlur = 12;
-        context.shadowColor = "rgba(174, 105, 255, 0.9)";
+        context.shadowBlur = 5;
+        context.shadowColor = "rgba(174, 145, 255, 0.55)";
         context.fill();
         context.shadowBlur = 0;
       });
@@ -188,8 +188,8 @@ function ParticleField() {
           const a = particles[i];
           const b = particles[j];
           const distance = Math.hypot(a.x - b.x, a.y - b.y);
-          if (distance < 105) {
-            const opacity = (1 - distance / 105) * 0.18;
+          if (distance < 82) {
+            const opacity = (1 - distance / 82) * 0.055;
             context.beginPath();
             context.moveTo(a.x, a.y);
             context.lineTo(b.x, b.y);
