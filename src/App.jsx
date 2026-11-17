@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Orbit, Telescope, Sparkles, Globe2, Search,
@@ -99,6 +98,128 @@ const stars = Array.from({ length: 65 }, (_, i) => ({
   size: i % 5 === 0 ? 3 : 2
 }));
 
+
+function ParticleField() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let width = 0;
+    let height = 0;
+    let frame = 0;
+    let particles = [];
+    const pointer = { x: -1000, y: -1000, active: false };
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+      const amount = Math.min(115, Math.max(48, Math.round((width * height) / 11500)));
+      particles = Array.from({ length: amount }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28,
+        radius: Math.random() * 1.7 + 0.55,
+        alpha: Math.random() * 0.55 + 0.2,
+        phase: Math.random() * Math.PI * 2
+      }));
+    };
+
+    const movePointer = (event) => {
+      const bounds = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - bounds.left;
+      pointer.y = event.clientY - bounds.top;
+      pointer.active = true;
+    };
+
+    const leavePointer = () => {
+      pointer.active = false;
+    };
+
+    const draw = (time = 0) => {
+      context.clearRect(0, 0, width, height);
+
+      particles.forEach((particle) => {
+        if (!reducedMotion) {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+
+          if (particle.x < -10) particle.x = width + 10;
+          if (particle.x > width + 10) particle.x = -10;
+          if (particle.y < -10) particle.y = height + 10;
+          if (particle.y > height + 10) particle.y = -10;
+
+          if (pointer.active) {
+            const dx = particle.x - pointer.x;
+            const dy = particle.y - pointer.y;
+            const distance = Math.hypot(dx, dy);
+            if (distance < 125 && distance > 0) {
+              const force = (125 - distance) / 1250;
+              particle.x += (dx / distance) * force * 8;
+              particle.y += (dy / distance) * force * 8;
+            }
+          }
+        }
+
+        const pulse = reducedMotion ? 1 : 0.72 + Math.sin(time * 0.0014 + particle.phase) * 0.28;
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(205, 169, 255, ${particle.alpha * pulse})`;
+        context.shadowBlur = 12;
+        context.shadowColor = "rgba(174, 105, 255, 0.9)";
+        context.fill();
+        context.shadowBlur = 0;
+      });
+
+      for (let i = 0; i < particles.length; i += 1) {
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const a = particles[i];
+          const b = particles[j];
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          if (distance < 105) {
+            const opacity = (1 - distance / 105) * 0.18;
+            context.beginPath();
+            context.moveTo(a.x, a.y);
+            context.lineTo(b.x, b.y);
+            context.strokeStyle = `rgba(177, 126, 255, ${opacity})`;
+            context.lineWidth = 0.7;
+            context.stroke();
+          }
+        }
+      }
+
+      if (!reducedMotion) frame = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+    canvas.addEventListener("pointermove", movePointer);
+    canvas.addEventListener("pointerleave", leavePointer);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+      canvas.removeEventListener("pointermove", movePointer);
+      canvas.removeEventListener("pointerleave", leavePointer);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="particle-canvas" aria-hidden="true" />;
+}
+
 function App() {
   const [page, setPage] = useState("home");
   const [selectedId, setSelectedId] = useState("solar");
@@ -138,6 +259,7 @@ function App() {
   return (
     <div className="lf-app">
       <div className="space-background">
+        <ParticleField />
         {stars.map((star, index) => (
           <span
             key={index}
