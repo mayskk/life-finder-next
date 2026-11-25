@@ -292,3 +292,53 @@ button:disabled { cursor: default; }
     margin-top: 34px;
   }
 }
+
+/* AURORA HERO: replace the holographic planet with animated northern lights */
+.hero-visual {
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 28px;
+  background:
+    radial-gradient(ellipse at 50% 68%, rgba(105, 55, 190, .22), transparent 58%),
+    radial-gradient(ellipse at 50% 35%, rgba(27, 104, 133, .12), transparent 62%);
+}
+.holo-stage { display: none !important; }
+.visual-label { display: none !important; }
+.hero-visual::before,
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 4% -18% 8%;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(24px);
+  transform-origin: 50% 50%;
+}
+.hero-visual::before {
+  background:
+    radial-gradient(ellipse at 22% 58%, transparent 0 23%, rgba(91, 255, 214, .05) 32%, transparent 48%),
+    linear-gradient(112deg, transparent 8%, rgba(54, 225, 190, .04) 20%, rgba(75, 255, 203, .52) 34%, rgba(120, 174, 255, .28) 43%, rgba(190, 105, 255, .42) 54%, rgba(75, 255, 203, .24) 65%, transparent 82%);
+  clip-path: polygon(0 38%, 13% 24%, 26% 33%, 39% 8%, 52% 27%, 66% 2%, 80% 24%, 100% 12%, 100% 75%, 82% 63%, 66% 83%, 49% 62%, 34% 88%, 18% 66%, 0 78%);
+  animation: auroraWaveOne 12s ease-in-out infinite alternate;
+}
+.hero-visual::after {
+  inset: 12% -12% 2%;
+  background: linear-gradient(100deg, transparent 12%, rgba(99, 126, 255, .08) 25%, rgba(81, 240, 208, .38) 42%, rgba(174, 115, 255, .34) 56%, rgba(68, 222, 202, .2) 70%, transparent 88%);
+  clip-path: polygon(0 50%, 15% 34%, 29% 48%, 43% 18%, 58% 42%, 73% 16%, 88% 37%, 100% 25%, 100% 70%, 84% 58%, 69% 82%, 53% 60%, 37% 87%, 21% 65%, 0 82%);
+  filter: blur(34px);
+  animation: auroraWaveTwo 16s ease-in-out infinite alternate;
+}
+@keyframes auroraWaveOne {
+  0% { transform: translate3d(-5%, 2%, 0) rotate(-7deg) scaleY(.88); opacity: .62; }
+  100% { transform: translate3d(5%, -3%, 0) rotate(5deg) scaleY(1.12); opacity: .98; }
+}
+@keyframes auroraWaveTwo {
+  0% { transform: translate3d(4%, -2%, 0) rotate(6deg) scaleY(1.08); opacity: .42; }
+  100% { transform: translate3d(-4%, 3%, 0) rotate(-5deg) scaleY(.86); opacity: .82; }
+}
+@media (max-width: 700px) {
+  .hero-visual { min-height: 290px; height: 290px; margin: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual::before, .hero-visual::after { animation: none; }
+}
