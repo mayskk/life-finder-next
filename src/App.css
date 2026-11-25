@@ -1554,3 +1554,15 @@ button:disabled {
     transition-duration: .01ms !important;
   }
 }
+/* Единый шрифт заголовков внутренних страниц */
+.content-page h1,
+.content-page h2,
+.content-page h3,
+.section-heading h2,
+.destination-card h3,
+.quiz-card h3,
+.detector-intro h3,
+.quiz-result h3 {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: -0.02em;
+}
