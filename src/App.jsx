@@ -1,11 +1,15 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Orbit, Telescope, Sparkles, Globe2, Search, ChevronRight, ArrowLeft,
   Rocket, Star, Menu, X, Microscope, Database, ExternalLink, CircleHelp,
-  Waves, ShieldCheck, Radio, Activity, RotateCcw
+  Waves, ShieldCheck, Radio, Activity, RotateCcw, Thermometer,
+  Ruler, Scale, Clock, MapPin, AlertCircle
 } from "lucide-react";
 import "./App.css";
+
+const CSV_FILE = "PSCompPars_2026.11.13_09.22.26.csv";
 
 const destinations = [
   {
@@ -83,21 +87,141 @@ const quizQuestions = [
   }
 ];
 
-const detectorFactors = [
-  { id: "rocky", title: "Каменистый состав", detail: "Может указывать на твёрдую поверхность.", icon: Globe2 },
-  { id: "zone", title: "Положение в обитаемой зоне", detail: "Орбита допускает жидкую воду при подходящей атмосфере.", icon: Orbit },
-  { id: "water", title: "Возможность жидкой воды", detail: "Вода важна для жизни в известной нам форме.", icon: Waves },
-  { id: "atmosphere", title: "Атмосфера", detail: "Состав и давление влияют на условия на поверхности.", icon: Activity },
-  { id: "star", title: "Стабильность звезды", detail: "Излучение и вспышки звезды могут влиять на планету.", icon: Star },
-  { id: "magnetic", title: "Защита от излучения", detail: "Магнитное поле и атмосфера могут влиять на сохранение среды.", icon: ShieldCheck }
-];
-
 const stars = Array.from({ length: 145 }, (_, i) => ({
   left: `${(i * 37 + 13) % 100}%`,
   top: `${(i * 61 + 7) % 100}%`,
   delay: `${(i % 8) * 0.45}s`,
   size: i % 7 === 0 ? 3 : 2
 }));
+
+// Чтение CSV с учётом кавычек и запятых внутри значений.
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let quoted = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+
+    if (char === '"') {
+      if (quoted && text[i + 1] === '"') {
+        value += '"';
+        i++;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (char === "," && !quoted) {
+      row.push(value);
+      value = "";
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && text[i + 1] === "\n") i++;
+      row.push(value);
+      if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+      row = [];
+      value = "";
+    } else {
+      value += char;
+    }
+  }
+
+  row.push(value);
+  if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+
+  if (!rows.length) return [];
+
+  const headers = rows[0].map((item) => item.trim().replace(/^\uFEFF/, ""));
+  return rows.slice(1).map((cells) => {
+    const result = {};
+    headers.forEach((header, index) => {
+      result[header] = (cells[index] || "").trim();
+    });
+    return result;
+  });
+}
+
+function getValue(planet, key) {
+  const value = planet?.[key];
+  if (value === undefined || value === null || value === "" || value === "—") return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function formatValue(value, digits = 2) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return "Нет данных";
+  return value.toLocaleString("ru-RU", {
+    maximumFractionDigits: digits
+  });
+}
+
+function analyzePlanet(planet) {
+  const radius = getValue(planet, "pl_rade");
+  const mass = getValue(planet, "pl_bmasse");
+  const temperature = getValue(planet, "pl_eqt");
+  const flux = getValue(planet, "pl_insol");
+
+  const reasons = [];
+  let supportive = 0;
+  let concerning = 0;
+
+  if (radius !== null) {
+    if (radius >= 0.5 && radius <= 1.8) {
+      supportive++;
+      reasons.push("Радиус находится в диапазоне, совместимом с некоторыми каменистыми планетами.");
+    } else if (radius > 2.5) {
+      concerning++;
+      reasons.push("Большой радиус может указывать на газовую или богатую летучими веществами планету.");
+    } else {
+      reasons.push("Радиус сам по себе не позволяет уверенно определить состав планеты.");
+    }
+  } else {
+    reasons.push("Радиус планеты не указан в таблице.");
+  }
+
+  if (temperature !== null) {
+    if (temperature >= 180 && temperature <= 330) {
+      supportive++;
+      reasons.push("Равновесная температура попадает в широкий ориентировочный диапазон для дальнейшего изучения.");
+    } else if (temperature > 400 || temperature < 100) {
+      concerning++;
+      reasons.push("Равновесная температура указывает на условия, которые могут быть неблагоприятными для жидкой воды на поверхности.");
+    } else {
+      reasons.push("Температурные данные требуют дополнительного изучения.");
+    }
+  } else {
+    reasons.push("Равновесная температура не указана.");
+  }
+
+  if (flux !== null) {
+    if (flux >= 0.25 && flux <= 1.5) {
+      supportive++;
+      reasons.push("Получаемый от звезды поток энергии находится в интересном для исследования диапазоне.");
+    } else if (flux > 3 || flux < 0.1) {
+      concerning++;
+      reasons.push("Поток энергии заметно отличается от земного.");
+    } else {
+      reasons.push("Поток энергии требует дополнительной оценки.");
+    }
+  } else {
+    reasons.push("Данные о потоке энергии от звезды отсутствуют.");
+  }
+
+  let status = "Недостаточно данных";
+  let explanation = "Доступных характеристик пока недостаточно для предварительной оценки.";
+
+  if (supportive >= 2 && concerning === 0) {
+    status = "Потенциальный кандидат для изучения";
+    explanation = "Некоторые известные параметры выглядят интересными для дальнейшего исследования. Это не подтверждает пригодность планеты для жизни.";
+  } else if (concerning >= 2) {
+    status = "Маловероятно пригодна";
+    explanation = "Несколько доступных характеристик указывают на возможные неблагоприятные условия. Для окончательного вывода нужны дополнительные наблюдения.";
+  } else if (supportive >= 1) {
+    status = "Есть интересные характеристики";
+    explanation = "Обнаружены отдельные параметры, заслуживающие изучения, но данных недостаточно для уверенной оценки.";
+  }
+
+  return { status, explanation, reasons };
+}
 
 function ParticleField() {
   const canvasRef = useRef(null);
@@ -203,10 +327,65 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [quizFinished, setQuizFinished] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [selectedFactors, setSelectedFactors] = useState([]);
+
+  const [planets, setPlanets] = useState([]);
+  const [csvLoading, setCsvLoading] = useState(false);
+  const [csvError, setCsvError] = useState("");
+  const [planetSearch, setPlanetSearch] = useState("");
+  const [selectedPlanet, setSelectedPlanet] = useState(null);
 
   const selected = destinations.find((item) => item.id === selectedId) || destinations[0];
   const score = answers.reduce((total, answer, index) => total + (answer === quizQuestions[index].correct ? 1 : 0), 0);
+
+  useEffect(() => {
+    if (page !== "detector" || planets.length > 0 || csvLoading) return;
+
+    let cancelled = false;
+
+    async function loadPlanets() {
+      setCsvLoading(true);
+      setCsvError("");
+
+      try {
+        const response = await fetch(`${import.meta.env.BASE_URL}${CSV_FILE}`);
+        if (!response.ok) {
+          throw new Error(`Не удалось загрузить CSV: ${response.status}`);
+        }
+
+        const text = await response.text();
+        const parsed = parseCSV(text);
+
+        if (!parsed.length || !parsed[0].pl_name) {
+          throw new Error("В таблице не найдена колонка pl_name.");
+        }
+
+        const validPlanets = parsed
+          .filter((planet) => planet.pl_name)
+          .sort((a, b) => a.pl_name.localeCompare(b.pl_name));
+
+        if (!cancelled) setPlanets(validPlanets);
+      } catch (error) {
+        if (!cancelled) setCsvError(error.message || "Не удалось прочитать таблицу NASA.");
+      } finally {
+        if (!cancelled) setCsvLoading(false);
+      }
+    }
+
+    loadPlanets();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [page, planets.length, csvLoading]);
+
+  useEffect(() => {
+    if (!selectedPlanet) return;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setSelectedPlanet(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [selectedPlanet]);
 
   function navigate(nextPage) {
     setPage(nextPage);
@@ -236,11 +415,46 @@ function App() {
     setQuizFinished(false);
   }
 
-  function toggleFactor(id) {
-    setSelectedFactors((current) => current.includes(id)
-      ? current.filter((item) => item !== id)
-      : [...current, id]);
-  }
+  const filteredPlanets = planets.filter((planet) =>
+    planet.pl_name?.toLowerCase().includes(planetSearch.toLowerCase()) ||
+    planet.hostname?.toLowerCase().includes(planetSearch.toLowerCase())
+  );
+
+  const modalAnalysis = selectedPlanet ? analyzePlanet(selectedPlanet) : null;
+
+  const modalStyle = {
+    position: "fixed",
+    inset: 0,
+    zIndex: 1000,
+    background: "rgba(5, 3, 14, .88)",
+    backdropFilter: "blur(12px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+    overflowY: "auto"
+  };
+
+  const modalPanelStyle = {
+    width: "100%",
+    maxWidth: "760px",
+    maxHeight: "90vh",
+    overflowY: "auto",
+    background: "linear-gradient(145deg, #171027, #0c0918)",
+    border: "1px solid rgba(190, 155, 255, .28)",
+    borderRadius: "22px",
+    padding: "clamp(20px, 4vw, 34px)",
+    color: "#f7f1ff",
+    boxShadow: "0 25px 100px rgba(0,0,0,.5)"
+  };
+
+  const metricStyle = {
+    background: "rgba(255,255,255,.045)",
+    border: "1px solid rgba(190,155,255,.13)",
+    borderRadius: "13px",
+    padding: "15px",
+    minWidth: 0
+  };
 
   return (
     <div className="lf-app">
@@ -405,50 +619,226 @@ function App() {
               <div className="section-heading">
                 <div className="eyebrow"><Microscope size={15} /> НАУЧНЫЙ ИНСТРУМЕНТ</div>
                 <h2>Life <span>Detector</span></h2>
-                <p>Изучи факторы, которые помогают учёным оценивать потенциальную пригодность планет для жизни.</p>
+                <p>Выбери экзопланету из каталога NASA и изучи её реальные характеристики.</p>
               </div>
+
               <div className="detector-card">
                 <div className="detector-intro">
                   <div className="detector-icon"><Search size={28} /></div>
-                  <div><span className="detector-kicker">INTERACTIVE RESEARCH MODEL</span><h3>Какие условия есть у этого мира?</h3>
-                    <p>Отметь факторы, которые, по твоему предположению, могут быть характерны для выбранной планеты.</p></div>
-                </div>
-                <div className="criteria-grid">
-                  {detectorFactors.map((factor) => {
-                    const Icon = factor.icon;
-                    const active = selectedFactors.includes(factor.id);
-                    return (
-                      <button key={factor.id} className={`criterion ${active ? "criterion-active" : ""}`} onClick={() => toggleFactor(factor.id)} aria-pressed={active}>
-                        <span className="criterion-icon"><Icon size={20} /></span>
-                        <span className="criterion-copy"><strong>{factor.title}</strong><small>{factor.detail}</small></span>
-                        <span className="criterion-check">{active ? "✓" : "+"}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-                <div className="detector-result">
-                  <div className="result-orbit"><Radio size={21} /></div>
-                  <div className="result-copy">
-                    <span className="detector-kicker">ВЫБРАНО ФАКТОРОВ: {selectedFactors.length} / {detectorFactors.length}</span>
-                    <strong>{selectedFactors.length === 0 ? "Начни исследование" : selectedFactors.length < 3 ? "Есть параметры для дальнейшего изучения" : "Много факторов требуют проверки"}</strong>
-                    <p>{selectedFactors.length === 0
-                      ? "Отметь факторы, чтобы увидеть краткий исследовательский вывод."
-                      : "Это учебная модель: отметки показывают только выбранные тобой пункты и не являются измерениями реальной планеты."}</p>
+                  <div>
+                    <span className="detector-kicker">NASA EXOPLANET ARCHIVE</span>
+                    <h3>Каталог экзопланет</h3>
+                    <p>Найди планету по названию или названию её звезды. Нажми на результат, чтобы запустить анализ.</p>
                   </div>
-                  <button className="reset-button" onClick={() => setSelectedFactors([])} aria-label="Сбросить выбор"><RotateCcw size={17} /></button>
                 </div>
-                <div className="science-note"><CircleHelp size={19} /><p><strong>Важно:</strong> Life Detector не обнаруживает жизнь и не вычисляет вероятность её существования. Обитаемая зона не гарантирует жидкую воду или жизнь: нужны реальные наблюдения атмосферы, поверхности и звезды.</p></div>
+
+                <div style={{ position: "relative", margin: "24px 0" }}>
+                  <Search size={19} style={{ position: "absolute", left: 16, top: 16, opacity: .65 }} />
+                  <input
+                    value={planetSearch}
+                    onChange={(event) => setPlanetSearch(event.target.value)}
+                    placeholder="Например, Proxima Centauri b..."
+                    aria-label="Поиск экзопланеты"
+                    style={{
+                      width: "100%", boxSizing: "border-box", padding: "15px 16px 15px 48px",
+                      borderRadius: "12px", border: "1px solid rgba(190,155,255,.28)",
+                      background: "rgba(255,255,255,.055)", color: "#fff", fontSize: "15px",
+                      outline: "none"
+                    }}
+                  />
+                </div>
+
+                {csvLoading && (
+                  <div style={{ padding: "35px 15px", textAlign: "center" }}>
+                    <div className="detector-kicker">ЗАГРУЗКА ДАННЫХ NASA</div>
+                    <p>Читаем каталог экзопланет...</p>
+                  </div>
+                )}
+
+                {csvError && (
+                  <div style={{ padding: "20px", borderRadius: "12px", background: "rgba(255,90,110,.09)", border: "1px solid rgba(255,90,110,.25)" }}>
+                    <AlertCircle size={22} />
+                    <strong style={{ display: "block", margin: "10px 0" }}>Не удалось загрузить каталог</strong>
+                    <p>{csvError}</p>
+                    <p>Проверь, что CSV-файл находится непосредственно в папке public и называется точно так же, как указано в коде.</p>
+                    <button className="secondary-button" onClick={() => { setPlanets([]); setCsvError(""); }}>Повторить загрузку <RotateCcw size={15} /></button>
+                  </div>
+                )}
+
+                {!csvLoading && !csvError && planets.length > 0 && (
+                  <>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 15 }}>
+                      <span className="detector-kicker">НАЙДЕНО В КАТАЛОГЕ: {filteredPlanets.length.toLocaleString("ru-RU")}</span>
+                      <span style={{ fontSize: 12, opacity: .6 }}>Источник: NASA Exoplanet Archive</span>
+                    </div>
+
+                    <div style={{ display: "grid", gap: 9 }}>
+                      {filteredPlanets.slice(0, 80).map((planet, index) => (
+                        <button
+                          key={`${planet.pl_name}-${index}`}
+                          onClick={() => setSelectedPlanet(planet)}
+                          style={{
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                            gap: 12, width: "100%", textAlign: "left", padding: "14px 16px",
+                            borderRadius: 12, cursor: "pointer", color: "#f7f1ff",
+                            background: "rgba(255,255,255,.045)",
+                            border: "1px solid rgba(190,155,255,.14)"
+                          }}
+                        >
+                          <span style={{ minWidth: 0 }}>
+                            <strong style={{ display: "block", overflowWrap: "anywhere" }}>{planet.pl_name}</strong>
+                            <small style={{ opacity: .6, display: "block", marginTop: 4 }}>
+                              Звезда: {planet.hostname || "Нет данных"}
+                              {getValue(planet, "pl_rade") !== null ? ` · Радиус: ${formatValue(getValue(planet, "pl_rade"))} R⊕` : ""}
+                            </small>
+                          </span>
+                          <ChevronRight size={19} style={{ flexShrink: 0, opacity: .7 }} />
+                        </button>
+                      ))}
+                    </div>
+
+                    {filteredPlanets.length > 80 && (
+                      <p style={{ textAlign: "center", opacity: .65, fontSize: 13, marginTop: 18 }}>
+                        Показаны первые 80 результатов. Уточни поиск, чтобы найти нужную планету.
+                      </p>
+                    )}
+
+                    {filteredPlanets.length === 0 && (
+                      <p style={{ textAlign: "center", padding: 25, opacity: .7 }}>Планеты с таким названием не найдены.</p>
+                    )}
+                  </>
+                )}
+
+                <div className="science-note" style={{ marginTop: 24 }}>
+                  <CircleHelp size={19} />
+                  <p><strong>Важно:</strong> данные взяты из каталога NASA. Не у каждой планеты измерены все характеристики. Отсутствующие значения не заменяются предположениями.</p>
+                </div>
+
                 <div className="detector-sources">
-                  <span>НАУЧНЫЕ ИСТОЧНИКИ</span>
-                  <a href="https://science.nasa.gov/exoplanets/" target="_blank" rel="noreferrer">NASA Exoplanets <ExternalLink size={13} /></a>
+                  <span>НАУЧНЫЙ ИСТОЧНИК</span>
                   <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noreferrer">NASA Exoplanet Archive <ExternalLink size={13} /></a>
-                  <a href="https://science.nasa.gov/resource/what-is-the-habitable-zone/" target="_blank" rel="noreferrer">Habitable Zone <ExternalLink size={13} /></a>
                 </div>
               </div>
             </motion.section>
           )}
         </AnimatePresence>
       </main>
+
+      <AnimatePresence>
+        {selectedPlanet && (
+          <motion.div
+            style={modalStyle}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setSelectedPlanet(null);
+            }}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="planet-modal-title"
+              style={modalPanelStyle}
+              initial={{ opacity: 0, y: 25, scale: .98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 15 }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 15, alignItems: "flex-start" }}>
+                <div>
+                  <span className="detector-kicker">РЕЗУЛЬТАТ АНАЛИЗА NASA</span>
+                  <h2 id="planet-modal-title" style={{ fontSize: "clamp(23px, 4vw, 32px)", margin: "9px 0" }}>{selectedPlanet.pl_name}</h2>
+                  <p style={{ opacity: .65, margin: 0 }}>Звёздная система: {selectedPlanet.hostname || "Нет данных"}</p>
+                </div>
+                <button onClick={() => setSelectedPlanet(null)} aria-label="Закрыть окно" style={{ background: "rgba(255,255,255,.08)", border: 0, borderRadius: 10, color: "white", padding: 10, cursor: "pointer" }}>
+                  <X size={21} />
+                </button>
+              </div>
+
+              <div style={{ marginTop: 24 }}>
+                <div className="detector-kicker" style={{ marginBottom: 12 }}>ХАРАКТЕРИСТИКИ ПЛАНЕТЫ</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 10 }}>
+                  <div style={metricStyle}>
+                    <Ruler size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Радиус</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "pl_rade"))}</strong>
+                    <small style={{ opacity: .6 }}>радиусов Земли (R⊕)</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Scale size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Масса</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "pl_bmasse"))}</strong>
+                    <small style={{ opacity: .6 }}>масс Земли (M⊕)</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Thermometer size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Равновесная температура</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "pl_eqt"), 1)}</strong>
+                    <small style={{ opacity: .6 }}>кельвинов (K)</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Clock size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Орбитальный период</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "pl_orbper"))}</strong>
+                    <small style={{ opacity: .6 }}>земных суток</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <MapPin size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Расстояние от Земли</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>
+                      {getValue(selectedPlanet, "sy_dist") !== null
+                        ? formatValue(getValue(selectedPlanet, "sy_dist") * 3.26156, 1)
+                        : "Нет данных"}
+                    </strong>
+                    <small style={{ opacity: .6 }}>световых лет</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Orbit size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Поток энергии от звезды</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "pl_insol"))}</strong>
+                    <small style={{ opacity: .6 }}>относительно земного потока</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Star size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Температура звезды</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "st_teff"), 0)}</strong>
+                    <small style={{ opacity: .6 }}>кельвинов (K)</small>
+                  </div>
+                  <div style={metricStyle}>
+                    <Database size={18} />
+                    <small style={{ display: "block", opacity: .6, marginTop: 8 }}>Год открытия</small>
+                    <strong style={{ display: "block", fontSize: 20, marginTop: 4 }}>{formatValue(getValue(selectedPlanet, "disc_year"), 0)}</strong>
+                    <small style={{ opacity: .6 }}>год обнаружения</small>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 24, padding: 19, borderRadius: 15, background: "rgba(177,135,255,.09)", border: "1px solid rgba(190,155,255,.25)" }}>
+                <span className="detector-kicker">ПРЕДВАРИТЕЛЬНАЯ ОЦЕНКА</span>
+                <h3 style={{ fontSize: 22, margin: "10px 0" }}>{modalAnalysis.status}</h3>
+                <p style={{ lineHeight: 1.6, opacity: .85 }}>{modalAnalysis.explanation}</p>
+                <div style={{ marginTop: 18 }}>
+                  <strong style={{ fontSize: 13 }}>ПОЧЕМУ ПОЛУЧЕН ТАКОЙ РЕЗУЛЬТАТ</strong>
+                  {modalAnalysis.reasons.map((reason, index) => (
+                    <p key={index} style={{ fontSize: 13, lineHeight: 1.55, opacity: .78, margin: "9px 0" }}>• {reason}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginTop: 18, padding: 15, borderRadius: 12, background: "rgba(255,255,255,.045)" }}>
+                <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0, opacity: .8 }}>
+                  <strong>Научное ограничение:</strong> равновесная температура не равна реальной температуре поверхности. Эта оценка не подтверждает наличие воды, атмосферы или жизни. Для этого нужны дополнительные наблюдения.
+                </p>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
+                <a className="text-link" href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noreferrer">Открыть NASA Archive <ExternalLink size={14} /></a>
+                <button className="primary-button" onClick={() => setSelectedPlanet(null)}>Закрыть анализ <X size={16} /></button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <footer className="lf-footer">
         <button className="footer-brand" onClick={() => navigate("home")}><Orbit size={19} /> LIFE FINDER</button>
