@@ -334,3 +334,51 @@ button:disabled { cursor: default; }
     height: 260px;
   }
 }
+
+/* MINIMAL COSMIC BACKGROUND — LIFE FINDER */
+
+.lf-app {
+  background:
+    radial-gradient(ellipse at 12% 15%, rgba(113, 65, 174, .17), transparent 38%),
+    radial-gradient(ellipse at 88% 82%, rgba(132, 65, 151, .13), transparent 38%),
+    radial-gradient(ellipse at 50% 50%, rgba(65, 39, 105, .08), transparent 65%),
+    linear-gradient(135deg, #080510 0%, #10091c 52%, #090512 100%);
+}
+
+.lf-app::before {
+  width: 520px;
+  height: 520px;
+  left: -280px;
+  top: 12%;
+  background: radial-gradient(circle, rgba(151, 91, 220, .13), transparent 70%);
+  filter: blur(35px);
+}
+
+.lf-app::after {
+  width: 580px;
+  height: 580px;
+  right: -320px;
+  top: 42%;
+  background: radial-gradient(circle, rgba(178, 91, 185, .11), transparent 70%);
+  filter: blur(40px);
+}
+
+.particle-canvas {
+  opacity: .35;
+}
+
+.space-star {
+  opacity: .65;
+  box-shadow: 0 0 5px rgba(195, 164, 255, .35);
+  animation-duration: 8s;
+}
+
+.nebula {
+  opacity: .055;
+  filter: blur(115px);
+  animation-duration: 28s;
+}
+
+.background-grid {
+  display: none;
+}
