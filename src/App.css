@@ -2637,3 +2637,47 @@ button:hover::after {
 .destination-card:hover::before {
   opacity: 0.45;
 }
+/* LIFE FINDER — PERFORMANCE OPTIMIZATION */
+
+/* Уменьшаем нагрузку от фоновых анимаций */
+.space-star {
+  animation: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.nebula-one,
+.nebula-two {
+  animation: none !important;
+}
+
+.particle-canvas {
+  animation: none !important;
+  filter: none !important;
+  opacity: 0.4 !important;
+}
+
+.background-grid {
+  animation: none !important;
+  opacity: 0.05 !important;
+}
+
+/* Убираем постоянное тяжёлое размытие */
+.lf-app::before {
+  animation: none !important;
+  filter: none !important;
+  opacity: 0.5;
+}
+
+/* Упрощаем свечение планеты */
+.holo-aura {
+  animation: none !important;
+  filter: none !important;
+}
+
+/* Сохраняем плавность интерфейса */
+.destination-card,
+.planet-card,
+button {
+  transition-duration: 0.2s !important;
+}
