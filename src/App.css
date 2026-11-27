@@ -1649,3 +1649,35 @@ a {
     opacity: 0.15;
   }
 }
+/* LIFE FINDER — TWINKLING STARS */
+
+.space-star {
+  animation: starTwinkle 3s ease-in-out infinite;
+  box-shadow:
+    0 0 5px #ffffff,
+    0 0 12px #c58aff,
+    0 0 20px rgba(241, 139, 213, 0.5);
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.space-star:nth-child(3n) {
+  animation-delay: 0.8s;
+}
+
+.space-star:nth-child(4n) {
+  animation-delay: 1.6s;
+}
+
+.space-star:nth-child(5n) {
+  animation-delay: 2.2s;
+}
