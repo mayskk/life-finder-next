@@ -1745,3 +1745,29 @@ a {
     transform: translate(-2%, 5%) scale(1);
   }
 }
+/* LIFE FINDER — PLANET ENERGY RING */
+
+.holo-stage::before {
+  content: "";
+  position: absolute;
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(202, 151, 255, 0.55);
+  box-shadow:
+    0 0 18px rgba(183, 138, 255, 0.4),
+    inset 0 0 20px rgba(241, 139, 213, 0.15);
+  animation: energyRing 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes energyRing {
+  0%, 100% {
+    transform: scale(0.9) rotate(0deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.2) rotate(45deg);
+    opacity: 0.9;
+  }
+}
