@@ -2234,3 +2234,372 @@ button:hover::after {
     0 0 45px rgba(241, 139, 213, 0.4);
   transform: translateY(-4px) scale(1.02);
 }
+/* LIFE FINDER — ORBITAL GLOW FIX */
+
+.holo-orbit {
+  filter:
+    drop-shadow(0 0 5px rgba(205, 155, 255, 0.8))
+    drop-shadow(0 0 12px rgba(241, 139, 213, 0.5));
+}
+
+.holo-orbit-one {
+  animation: orbitSpin 13s linear infinite;
+}
+
+.holo-orbit-two {
+  animation: orbitSpin 18s linear infinite reverse;
+}/* LIFE FINDER — PLANET CARD GLOW */
+
+.planet-card {
+  position: relative;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.planet-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(205, 155, 255, 0.65);
+  box-shadow:
+    0 0 15px rgba(183, 138, 255, 0.25),
+    0 0 35px rgba(241, 139, 213, 0.16);
+}/* LIFE FINDER — PLANET CARD ENTRANCE */
+
+@keyframes planetCardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.planet-card {
+  animation: planetCardAppear 0.7s ease both;
+}
+
+.planet-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.planet-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.planet-card:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.planet-card:nth-child(5) {
+  animation-delay: 0.32s;
+}
+
+.planet-card:nth-child(6) {
+  animation-delay: 0.4s;
+}/* LIFE FINDER — NEON PLANET BORDERS */
+
+.planet-card {
+  border: 1px solid rgba(183, 138, 255, 0.22);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183, 138, 255, 0.08),
+      rgba(241, 139, 213, 0.035)
+    );
+  backdrop-filter: blur(14px);
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    background 0.4s ease;
+}
+
+.planet-card:hover {
+  border-color: rgba(241, 139, 213, 0.75);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183, 138, 255, 0.16),
+      rgba(241, 139, 213, 0.09)
+    );
+  box-shadow:
+    0 0 18px rgba(183, 138, 255, 0.25),
+    0 0 35px rgba(241, 139, 213, 0.18);
+}/* LIFE FINDER — NEON BUTTON EFFECTS */
+
+.primary-button,
+.start-button,
+.hero button {
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+.primary-button:hover,
+.start-button:hover,
+.hero button:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.15);
+  box-shadow:
+    0 0 16px rgba(183, 138, 255, 0.55),
+    0 0 32px rgba(241, 139, 213, 0.3);
+}
+
+.primary-button:active,
+.start-button:active,
+.hero button:active {
+  transform: scale(0.97);
+}/* LIFE FINDER — COSMIC PAGE TRANSITIONS */
+
+.content-page {
+  animation: cosmicPageEnter 0.65s ease both;
+}
+
+@keyframes cosmicPageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.content-page h1,
+.content-page h2 {
+  animation: headingGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes headingGlow {
+  from {
+    text-shadow: 0 0 8px rgba(183, 138, 255, 0.15);
+  }
+
+  to {
+    text-shadow:
+      0 0 14px rgba(183, 138, 255, 0.4),
+      0 0 24px rgba(241, 139, 213, 0.2);
+  }
+}/* LIFE FINDER — COSMIC NAVIGATION */
+
+.nav-links button {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-links button:hover {
+  color: #f1c5ff;
+  text-shadow: 0 0 12px rgba(183, 138, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+.nav-links button.nav-active {
+  color: #e8c5ff;
+  text-shadow:
+    0 0 10px rgba(183, 138, 255, 0.8),
+    0 0 20px rgba(241, 139, 213, 0.45);
+}
+
+.nav-links button.nav-active::after {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -7px;
+  height: 2px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #b78aff, #f18bd5);
+  box-shadow: 0 0 12px #c58aff;
+}/* LIFE FINDER — COSMIC STARFIELD */
+
+.space-star {
+  animation: cosmicStarTwinkle 3.5s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.space-star:nth-child(3n) {
+  animation-delay: 0.7s;
+}
+
+.space-star:nth-child(4n) {
+  animation-delay: 1.4s;
+}
+
+.space-star:nth-child(5n) {
+  animation-delay: 2.1s;
+}
+
+@keyframes cosmicStarTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 2px #b78aff);
+  }
+
+  50% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 5px #ffffff)
+      drop-shadow(0 0 10px #c58aff)
+      drop-shadow(0 0 16px #f18bd5);
+  }
+}/* LIFE FINDER — HOLOGRAPHIC ANALYSIS WINDOW */
+
+[role="dialog"] {
+  backdrop-filter: blur(18px);
+}
+
+[role="dialog"] > div {
+  animation: hologramAppear 0.5s ease both;
+}
+
+@keyframes hologramAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}/* LIFE FINDER — COSMIC PLANET AURA */
+
+.holo-stage {
+  isolation: isolate;
+}
+
+.holo-stage::after {
+  content: "";
+  position: absolute;
+  width: 75%;
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+
+  background: radial-gradient(
+    circle,
+    rgba(183, 138, 255, 0.18) 0%,
+    rgba(241, 139, 213, 0.10) 35%,
+    transparent 70%
+  );
+
+  filter: blur(28px);
+  animation: cosmicAura 6s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicAura {
+  from {
+    opacity: 0.35;
+    scale: 0.85;
+  }
+
+  to {
+    opacity: 0.9;
+    scale: 1.15;
+  }
+}/* LIFE FINDER — NASA CATALOG INTERACTIONS */
+
+.detector-page button {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    filter 0.3s ease;
+}
+
+.detector-page button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+  box-shadow:
+    0 0 12px rgba(183, 138, 255, 0.35),
+    0 0 25px rgba(241, 139, 213, 0.2);
+}
+
+.detector-page button:active {
+  transform: scale(0.97);
+}/* LIFE FINDER — GALAXY LIGHT FLOW */
+
+.lf-app::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(151, 76, 230, 0.13),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 65%,
+      rgba(241, 105, 190, 0.12),
+      transparent 35%
+    );
+
+  filter: blur(55px);
+  animation: galaxyLightFlow 22s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyLightFlow {
+  0% {
+    transform: translate(-3%, -2%) scale(0.95);
+  }
+
+  50% {
+    transform: translate(3%, 3%) scale(1.08);
+  }
+
+  100% {
+    transform: translate(-2%, 4%) scale(1);
+  }
+}/* LIFE FINDER — COSMIC GLASS */
+
+.destination-card,
+.quiz-card,
+[role="dialog"] {
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.destination-card {
+  border: 1px solid rgba(205, 155, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 30px rgba(100, 50, 160, 0.12);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.destination-card:hover {
+  border-color: rgba(241, 139, 213, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 25px rgba(183, 138, 255, 0.2),
+    0 12px 35px rgba(241, 139, 213, 0.12);
+  transform: translateY(-5px);
+}
+
+.quiz-card {
+  border-color: rgba(183, 138, 255, 0.25);
+}
