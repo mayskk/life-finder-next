@@ -1417,3 +1417,83 @@ a {
     transition-duration: .01ms !important;
   }
 }
+
+/* LIFE FINDER — HERO LAYOUT FIX */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.hero-content,
+.hero-visual {
+  min-width: 0;
+  width: 100%;
+}
+
+.hero-visual {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
+.holo-stage {
+  position: relative;
+  width: min(100%, 520px);
+  min-height: 450px;
+  aspect-ratio: 1 / 1;
+  margin: auto;
+  isolation: isolate;
+}
+
+.holo-aura {
+  z-index: 0;
+}
+
+.holo-orbit {
+  z-index: 1;
+}
+
+.holo-sphere {
+  z-index: 3;
+  display: block;
+}
+
+.holo-sphere-core,
+.holo-grid,
+.holo-latitudes,
+.holo-scanline,
+.holo-highlight {
+  position: absolute;
+}
+
+.holo-data,
+.holo-node,
+.holo-crosshair {
+  z-index: 4;
+}
+
+.hero-bottom {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 680px) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .holo-stage {
+    min-height: 320px;
+  }
+}
