@@ -1840,3 +1840,29 @@ a {
     transform: scale(1.15);
   }
 }
+/* LIFE FINDER — GLOWING TITLE */
+
+.hero h1 {
+  background: linear-gradient(
+    100deg,
+    #ffffff 5%,
+    #d9a5ff 35%,
+    #f18bd5 65%,
+    #ffffff 95%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShimmer 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px rgba(202, 151, 255, 0.35));
+}
+
+@keyframes titleShimmer {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
