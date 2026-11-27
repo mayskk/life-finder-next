@@ -2751,3 +2751,25 @@ a,
 .glass-card {
   transition-duration: 0.2s !important;
 }
+/* LIFE FINDER — живые планеты */
+
+.planet,
+.hologram-planet {
+  transform-origin: center;
+  transition:
+    transform 0.5s ease,
+    filter 0.5s ease;
+}
+
+.planet:hover,
+.hologram-planet:hover {
+  transform: scale(1.06);
+  filter: brightness(1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet,
+  .hologram-planet {
+    transition: none !important;
+  }
+}
