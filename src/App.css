@@ -1771,3 +1771,33 @@ a {
     opacity: 0.9;
   }
 }
+/* LIFE FINDER — HOLOGRAM PLANET GLOW */
+
+.holo-sphere {
+  animation: planetFloat 7s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 15px rgba(183, 138, 255, 0.45))
+    drop-shadow(0 0 35px rgba(241, 139, 213, 0.25));
+}
+
+.holo-sphere-core {
+  animation: planetRotate 35s linear infinite;
+}
+
+@keyframes planetFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes planetRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
