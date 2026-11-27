@@ -1610,3 +1610,42 @@ a {
     opacity: 0;
   }
 }
+/* LIFE FINDER — ANIMATED NEBULA */
+
+.nebula-one {
+  animation: purpleNebula 22s ease-in-out infinite alternate;
+}
+
+.nebula-two {
+  animation: pinkNebula 28s ease-in-out infinite alternate;
+}
+
+@keyframes purpleNebula {
+  0% {
+    transform: translate(-5%, -3%) scale(0.9);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate(12%, 10%) scale(1.2);
+    opacity: 0.25;
+  }
+  100% {
+    transform: translate(4%, 16%) scale(1.05);
+    opacity: 0.16;
+  }
+}
+
+@keyframes pinkNebula {
+  0% {
+    transform: translate(5%, 0) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate(-12%, -10%) scale(1.25);
+    opacity: 0.24;
+  }
+  100% {
+    transform: translate(-4%, 8%) scale(0.95);
+    opacity: 0.15;
+  }
+}
