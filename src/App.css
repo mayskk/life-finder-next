@@ -1566,3 +1566,175 @@ button:disabled {
   font-family: 'Inter', sans-serif !important;
   letter-spacing: -0.02em;
 }
+
+/* LIFE FINDER — subtle motion and depth enhancements */
+.lf-app {
+  background-size: 140% 140%, 140% 140%, 140% 140%, 100% 100%;
+  animation: lfBackgroundDrift 32s ease-in-out infinite alternate;
+}
+
+@keyframes lfBackgroundDrift {
+  from { background-position: 0% 0%, 100% 100%, 50% 50%, 0 0; }
+  to   { background-position: 8% 12%, 92% 88%, 54% 46%, 0 0; }
+}
+
+.brand-icon {
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+
+.brand:hover .brand-icon,
+.footer-brand:hover .brand-icon {
+  transform: rotate(-8deg) scale(1.06);
+  border-color: rgba(226, 195, 255, .62);
+  box-shadow: 0 0 32px rgba(175, 112, 255, .34),
+              inset 0 1px rgba(255,255,255,.2);
+}
+
+.nav-links button {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links button::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 5px;
+  height: 1px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #d6adff, transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .28s ease;
+}
+
+.nav-links button:hover::after,
+.nav-links button.nav-active::after {
+  transform: scaleX(1);
+}
+
+.primary-button,
+.secondary-button,
+.destination-next {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.primary-button::before,
+.secondary-button::before,
+.destination-next::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.13) 48%, transparent 76%);
+  transform: translateX(-120%);
+  transition: transform .65s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.primary-button:hover::before,
+.secondary-button:hover::before,
+.destination-next:hover::before {
+  transform: translateX(120%);
+}
+
+.journey-map,
+.destination-card,
+.quiz-card,
+.detector-card {
+  will-change: transform;
+}
+
+.journey-map:hover,
+.destination-card:hover,
+.quiz-card:hover,
+.detector-card:hover {
+  transform: translateY(-4px);
+}
+
+.destination-orb {
+  animation: lfOrbFloat 6s ease-in-out infinite;
+}
+
+.destination-orb div {
+  animation: auraPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes lfOrbFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+.map-sun {
+  animation: lfSunBreath 5s ease-in-out infinite;
+}
+
+@keyframes lfSunBreath {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.09); filter: brightness(1.15); }
+}
+
+.point-core {
+  animation: lfPointPulse 3.8s ease-in-out infinite;
+}
+
+@keyframes lfPointPulse {
+  0%, 100% { box-shadow: 0 0 12px var(--planet-color); }
+  50% { box-shadow: 0 0 22px var(--planet-color), 0 0 34px color-mix(in srgb, var(--planet-color), transparent 45%); }
+}
+
+.criterion,
+.quiz-options button {
+  transform: translateZ(0);
+}
+
+.criterion:focus-visible,
+.quiz-options button:focus-visible,
+.map-point:focus-visible {
+  outline: 2px solid #dcbaff;
+  outline-offset: 4px;
+}
+
+.detector-icon,
+.result-icon,
+.result-orbit {
+  animation: lfIconGlow 5s ease-in-out infinite;
+}
+
+@keyframes lfIconGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(190,130,255,0)); }
+  50% { filter: drop-shadow(0 0 10px rgba(190,130,255,.28)); }
+}
+
+.content-page {
+  animation: lfPageEnter .55s cubic-bezier(.2,.7,.25,1) both;
+}
+
+@keyframes lfPageEnter {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lf-app,
+  .destination-orb,
+  .destination-orb div,
+  .map-sun,
+  .point-core,
+  .detector-icon,
+  .result-icon,
+  .result-orbit,
+  .content-page {
+    animation: none !important;
+  }
+
+  .journey-map:hover,
+  .destination-card:hover,
+  .quiz-card:hover,
+  .detector-card:hover {
+    transform: none;
+  }
+}
