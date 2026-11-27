@@ -2681,3 +2681,73 @@ button:hover::after {
 button {
   transition-duration: 0.2s !important;
 }
+/* Оптимизация производительности LIFE FINDER */
+
+* {
+  box-sizing: border-box;
+}
+
+.particle-canvas,
+.meteor-field {
+  pointer-events: none;
+  will-change: auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .particle-canvas {
+    opacity: 0.5;
+  }
+
+  .meteor-field {
+    display: none;
+  }
+}/* Оптимизация анимации метеоров */
+
+.meteor,
+.shooting-star {
+  animation-duration: 8s !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+@media (max-width: 768px) {
+  .meteor,
+  .shooting-star {
+    display: none !important;
+  }
+}/* Уменьшаем нагрузку от визуальных эффектов */
+
+* {
+  text-shadow: none;
+}
+
+.card,
+.glass-card,
+.planet-card,
+.feature-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+button,
+a,
+.card,
+.glass-card {
+  transition-duration: 0.2s !important;
+}
