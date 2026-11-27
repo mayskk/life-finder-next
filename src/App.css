@@ -1681,3 +1681,33 @@ a {
 .space-star:nth-child(5n) {
   animation-delay: 2.2s;
 }
+/* LIFE FINDER — FLOATING COSMIC PARTICLES */
+
+.particle-canvas {
+  opacity: 0.8;
+  animation: cosmicGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicGlow {
+  0% {
+    opacity: 0.45;
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    opacity: 0.9;
+    filter: hue-rotate(25deg);
+  }
+}
+
+.background-grid {
+  animation: gridPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes gridPulse {
+  0% {
+    opacity: 0.035;
+  }
+  100% {
+    opacity: 0.12;
+  }
+}
