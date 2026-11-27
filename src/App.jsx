@@ -365,7 +365,7 @@ function App() {
   const [csvLoading, setCsvLoading] = useState(false);
   const [csvAttempted, setCsvAttempted] = useState(false);
   const [csvError, setCsvError] = useState("");
-  const [planetSearch, setPlanetSearch] = useState("");
+  const [visiblePlanetCount, setVisiblePlanetCount] = useState(80);
   const [selectedPlanet, setSelectedPlanet] = useState(null);
 
   const selected = destinations.find((item) => item.id === selectedId) || destinations[0];
@@ -450,10 +450,7 @@ function App() {
     setQuizFinished(false);
   }
 
-  const filteredPlanets = planets.filter((planet) =>
-    planet.pl_name?.toLowerCase().includes(planetSearch.toLowerCase()) ||
-    planet.hostname?.toLowerCase().includes(planetSearch.toLowerCase())
-  );
+  const visiblePlanets = planets.slice(0, visiblePlanetCount);
 
   const modalAnalysis = selectedPlanet ? analyzePlanet(selectedPlanet) : null;
 
@@ -659,28 +656,12 @@ function App() {
 
               <div className="detector-card">
                 <div className="detector-intro">
-                  <div className="detector-icon"><Search size={28} /></div>
+                  <div className="detector-icon"><Orbit size={28} /></div>
                   <div>
                     <span className="detector-kicker">NASA EXOPLANET ARCHIVE</span>
                     <h3>Каталог экзопланет</h3>
-                    <p>Найди планету по названию или названию её звезды. Нажми на результат, чтобы запустить анализ.</p>
+                    <p>Выбери планету из каталога NASA, чтобы посмотреть её характеристики и предварительную оценку условий для жизни.</p>
                   </div>
-                </div>
-
-                <div style={{ position: "relative", margin: "24px 0" }}>
-                  <Search size={19} style={{ position: "absolute", left: 16, top: 16, opacity: .65 }} />
-                  <input
-                    value={planetSearch}
-                    onChange={(event) => setPlanetSearch(event.target.value)}
-                    placeholder="Например, Proxima Centauri b..."
-                    aria-label="Поиск экзопланеты"
-                    style={{
-                      width: "100%", boxSizing: "border-box", padding: "15px 16px 15px 48px",
-                      borderRadius: "12px", border: "1px solid rgba(190,155,255,.28)",
-                      background: "rgba(255,255,255,.055)", color: "#fff", fontSize: "15px",
-                      outline: "none"
-                    }}
-                  />
                 </div>
 
                 {csvLoading && (
@@ -703,12 +684,12 @@ function App() {
                 {!csvLoading && !csvError && planets.length > 0 && (
                   <>
                     <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 15 }}>
-                      <span className="detector-kicker">НАЙДЕНО В КАТАЛОГЕ: {filteredPlanets.length.toLocaleString("ru-RU")}</span>
+                      <span className="detector-kicker">ПЛАНЕТ В КАТАЛОГЕ: {planets.length.toLocaleString("ru-RU")}</span>
                       <span style={{ fontSize: 12, opacity: .6 }}>Источник: NASA Exoplanet Archive</span>
                     </div>
 
                     <div style={{ display: "grid", gap: 9 }}>
-                      {filteredPlanets.slice(0, 80).map((planet, index) => (
+                      {visiblePlanets.map((planet, index) => (
                         <button
                           key={`${planet.pl_name}-${index}`}
                           onClick={() => setSelectedPlanet(planet)}
@@ -732,14 +713,18 @@ function App() {
                       ))}
                     </div>
 
-                    {filteredPlanets.length > 80 && (
-                      <p style={{ textAlign: "center", opacity: .65, fontSize: 13, marginTop: 18 }}>
-                        Показаны первые 80 результатов. Уточни поиск, чтобы найти нужную планету.
-                      </p>
-                    )}
-
-                    {filteredPlanets.length === 0 && (
-                      <p style={{ textAlign: "center", padding: 25, opacity: .7 }}>Планеты с таким названием не найдены.</p>
+                    {visiblePlanetCount < planets.length && (
+                      <div style={{ textAlign: "center", marginTop: 18 }}>
+                        <p style={{ opacity: .65, fontSize: 13, marginBottom: 12 }}>
+                          Показано {visiblePlanets.length.toLocaleString("ru-RU")} из {planets.length.toLocaleString("ru-RU")} планет
+                        </p>
+                        <button
+                          className="secondary-button"
+                          onClick={() => setVisiblePlanetCount((count) => Math.min(count + 80, planets.length))}
+                        >
+                          Показать ещё 80 планет <ChevronRight size={15} />
+                        </button>
+                      </div>
                     )}
                   </>
                 )}
