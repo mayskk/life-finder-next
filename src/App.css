@@ -1497,3 +1497,54 @@ a {
     min-height: 320px;
   }
 }
+
+/* LIFE FINDER — FIX HERO STATISTICS */
+
+.hero-bottom {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 32px !important;
+  width: 100%;
+  align-items: start;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.hero-bottom > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.hero-bottom strong {
+  flex-shrink: 0;
+  min-width: 42px;
+  line-height: 1.1;
+}
+
+.hero-bottom span {
+  display: block;
+  min-width: 0;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+@media (max-width: 900px) {
+  .hero-bottom {
+    gap: 18px !important;
+  }
+
+  .hero-bottom > div {
+    gap: 9px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-bottom {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+}
