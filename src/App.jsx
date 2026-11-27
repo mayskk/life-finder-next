@@ -94,50 +94,83 @@ const stars = Array.from({ length: 145 }, (_, i) => ({
   size: i % 7 === 0 ? 3 : 2
 }));
 
-// Чтение CSV с учётом кавычек и запятых внутри значений.
+// Разбор CSV: учитываем кавычки, BOM, служебные строки NASA и разные разделители.
 function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let value = "";
-  let quoted = false;
+  if (!text || typeof text !== "string") return [];
 
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
+  const source = text.replace(/^\uFEFF/, "");
 
-    if (char === '"') {
-      if (quoted && text[i + 1] === '"') {
-        value += '"';
-        i++;
+  function parseRows(delimiter) {
+    const rows = [];
+    let row = [];
+    let value = "";
+    let quoted = false;
+
+    for (let i = 0; i < source.length; i++) {
+      const char = source[i];
+
+      if (char === '"') {
+        if (quoted && source[i + 1] === '"') {
+          value += '"';
+          i++;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (char === delimiter && !quoted) {
+        row.push(value);
+        value = "";
+      } else if ((char === "\n" || char === "\r") && !quoted) {
+        if (char === "\r" && source[i + 1] === "\n") i++;
+        row.push(value);
+        if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+        row = [];
+        value = "";
       } else {
-        quoted = !quoted;
+        value += char;
       }
-    } else if (char === "," && !quoted) {
-      row.push(value);
-      value = "";
-    } else if ((char === "\n" || char === "\r") && !quoted) {
-      if (char === "\r" && text[i + 1] === "\n") i++;
-      row.push(value);
-      if (row.some((cell) => cell.trim() !== "")) rows.push(row);
-      row = [];
-      value = "";
-    } else {
-      value += char;
     }
+
+    row.push(value);
+    if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+    return rows;
   }
 
-  row.push(value);
-  if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+  const normalizeHeader = (cell) =>
+    String(cell ?? "")
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .replace(/^#\s*/, "")
+      .trim()
+      .toLowerCase();
 
-  if (!rows.length) return [];
-
-  const headers = rows[0].map((item) => item.trim().replace(/^\uFEFF/, ""));
-  return rows.slice(1).map((cells) => {
-    const result = {};
-    headers.forEach((header, index) => {
-      result[header] = (cells[index] || "").trim();
-    });
-    return result;
+  // NASA может добавлять перед заголовками служебные строки.
+  // Проверяем распространённые разделители и ищем строку с pl_name.
+  const candidates = [",", "\t", ";"].map((delimiter) => {
+    const rows = parseRows(delimiter);
+    const headerIndex = rows.findIndex((row) =>
+      row.some((cell) => normalizeHeader(cell) === "pl_name")
+    );
+    return { rows, headerIndex };
   });
+
+  const matching = candidates
+    .filter((candidate) => candidate.headerIndex !== -1)
+    .sort((a, b) => b.rows[a.headerIndex].length - a.rows[b.headerIndex].length);
+
+  if (!matching.length) return [];
+
+  const { rows, headerIndex } = matching[0];
+  const headers = rows[headerIndex].map(normalizeHeader);
+
+  return rows.slice(headerIndex + 1)
+    .filter((cells) => cells.some((cell) => String(cell).trim() !== ""))
+    .map((cells) => {
+      const result = {};
+      headers.forEach((header, index) => {
+        if (header) result[header] = String(cells[index] ?? "").trim();
+      });
+      return result;
+    });
 }
 
 function getValue(planet, key) {
@@ -330,6 +363,7 @@ function App() {
 
   const [planets, setPlanets] = useState([]);
   const [csvLoading, setCsvLoading] = useState(false);
+  const [csvAttempted, setCsvAttempted] = useState(false);
   const [csvError, setCsvError] = useState("");
   const [planetSearch, setPlanetSearch] = useState("");
   const [selectedPlanet, setSelectedPlanet] = useState(null);
@@ -338,11 +372,10 @@ function App() {
   const score = answers.reduce((total, answer, index) => total + (answer === quizQuestions[index].correct ? 1 : 0), 0);
 
   useEffect(() => {
-    if (page !== "detector" || planets.length > 0 || csvLoading) return;
-
-    let cancelled = false;
+    if (page !== "detector" || planets.length > 0 || csvAttempted) return;
 
     async function loadPlanets() {
+      setCsvAttempted(true);
       setCsvLoading(true);
       setCsvError("");
 
@@ -352,31 +385,33 @@ function App() {
           throw new Error(`Не удалось загрузить CSV: ${response.status}`);
         }
 
-        const text = await response.text();
-        const parsed = parseCSV(text);
+        const csvText = await response.text();
+        const parsed = parseCSV(csvText);
 
-        if (!parsed.length || !parsed[0].pl_name) {
-          throw new Error("В таблице не найдена колонка pl_name.");
+        if (!parsed.length || !parsed.some((planet) => planet.pl_name)) {
+          throw new Error(
+            "Не найдена строка заголовков с колонкой pl_name. Проверь CSV-файл NASA и его формат."
+          );
         }
 
         const validPlanets = parsed
           .filter((planet) => planet.pl_name)
           .sort((a, b) => a.pl_name.localeCompare(b.pl_name));
 
-        if (!cancelled) setPlanets(validPlanets);
+        if (!validPlanets.length) {
+          throw new Error("В CSV-файле не найдено ни одной записи об экзопланете.");
+        }
+
+        setPlanets(validPlanets);
       } catch (error) {
-        if (!cancelled) setCsvError(error.message || "Не удалось прочитать таблицу NASA.");
+        setCsvError(error.message || "Не удалось прочитать таблицу NASA.");
       } finally {
-        if (!cancelled) setCsvLoading(false);
+        setCsvLoading(false);
       }
     }
 
     loadPlanets();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [page, planets.length, csvLoading]);
+  }, [page, planets.length, csvAttempted]);
 
   useEffect(() => {
     if (!selectedPlanet) return;
@@ -661,7 +696,7 @@ function App() {
                     <strong style={{ display: "block", margin: "10px 0" }}>Не удалось загрузить каталог</strong>
                     <p>{csvError}</p>
                     <p>Проверь, что CSV-файл находится непосредственно в папке public и называется точно так же, как указано в коде.</p>
-                    <button className="secondary-button" onClick={() => { setPlanets([]); setCsvError(""); }}>Повторить загрузку <RotateCcw size={15} /></button>
+                    <button className="secondary-button" onClick={() => { setPlanets([]); setCsvError(""); setCsvAttempted(false); }}>Повторить загрузку <RotateCcw size={15} /></button>
                   </div>
                 )}
 
