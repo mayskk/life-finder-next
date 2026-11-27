@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -94,7 +93,6 @@ const stars = Array.from({ length: 145 }, (_, i) => ({
   size: i % 7 === 0 ? 3 : 2
 }));
 
-// Разбор CSV: учитываем кавычки, BOM, служебные строки NASA и разные разделители.
 function parseCSV(text) {
   if (!text || typeof text !== "string") return [];
 
@@ -143,8 +141,6 @@ function parseCSV(text) {
       .trim()
       .toLowerCase();
 
-  // NASA может добавлять перед заголовками служебные строки.
-  // Проверяем распространённые разделители и ищем строку с pl_name.
   const candidates = [",", "\t", ";"].map((delimiter) => {
     const rows = parseRows(delimiter);
     const headerIndex = rows.findIndex((row) =>
@@ -189,7 +185,6 @@ function formatValue(value, digits = 2) {
 
 function analyzePlanet(planet) {
   const radius = getValue(planet, "pl_rade");
-  const mass = getValue(planet, "pl_bmasse");
   const temperature = getValue(planet, "pl_eqt");
   const flux = getValue(planet, "pl_insol");
 
@@ -326,6 +321,33 @@ function ParticleField() {
   return <canvas ref={canvasRef} className="particle-canvas" aria-hidden="true" />;
 }
 
+/* Новый слой метеоров */
+function MeteorField() {
+  const meteors = Array.from({ length: 6 }, (_, index) => ({
+    left: `${8 + index * 16}%`,
+    top: `${5 + (index * 19) % 65}%`,
+    delay: `${index * 3.8}s`,
+    duration: `${7 + (index % 3) * 2}s`
+  }));
+
+  return (
+    <div className="meteor-field" aria-hidden="true">
+      {meteors.map((meteor, index) => (
+        <span
+          key={index}
+          className="meteor"
+          style={{
+            left: meteor.left,
+            top: meteor.top,
+            "--meteor-delay": meteor.delay,
+            "--meteor-duration": meteor.duration
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function HologramPlanet() {
   return (
     <div className="holo-stage" aria-label="Анимированная голографическая модель планеты">
@@ -451,7 +473,6 @@ function App() {
   }
 
   const visiblePlanets = planets.slice(0, visiblePlanetCount);
-
   const modalAnalysis = selectedPlanet ? analyzePlanet(selectedPlanet) : null;
 
   const modalStyle = {
@@ -492,6 +513,7 @@ function App() {
     <div className="lf-app">
       <div className="space-background">
         <ParticleField />
+        <MeteorField />
         {stars.map((star, index) => (
           <span key={index} className="space-star" style={{
             left: star.left, top: star.top, width: star.size, height: star.size,
