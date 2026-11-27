@@ -1552,3 +1552,61 @@ a {
 .hero-bottom {
   display: none !important;
 }
+/* LIFE FINDER — SHOOTING STARS */
+
+.space-background::before,
+.space-background::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 2px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #d8a5ff,
+    #ffffff,
+    transparent
+  );
+  box-shadow: 0 0 12px #c88aff;
+  opacity: 0;
+  transform: rotate(-35deg);
+  animation: shootingStar 8s linear infinite;
+}
+
+.space-background::before {
+  top: 18%;
+  left: -200px;
+  animation-delay: 2s;
+}
+
+.space-background::after {
+  top: 55%;
+  left: -200px;
+  animation-delay: 6s;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #f18bd5,
+    #ffffff,
+    transparent
+  );
+}
+
+@keyframes shootingStar {
+  0% {
+    transform: translate(0, 0) rotate(-35deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  18% {
+    transform: translate(110vw, 65vh) rotate(-35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(110vw, 65vh) rotate(-35deg);
+    opacity: 0;
+  }
+}
