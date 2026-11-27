@@ -2620,3 +2620,20 @@ button:hover::after {
     0 5px 18px rgba(183, 138, 255, 0.10),
     0 8px 24px rgba(241, 139, 213, 0.06);
 }
+/* LIFE FINDER — JOURNEY SOFT GLASS */
+
+.destination-card:hover {
+  filter: brightness(1.04);
+  box-shadow:
+    0 6px 20px rgba(183, 138, 255, 0.08),
+    0 8px 24px rgba(241, 139, 213, 0.04);
+}
+
+.destination-card::before {
+  opacity: 0.25;
+  transition: opacity 0.35s ease;
+}
+
+.destination-card:hover::before {
+  opacity: 0.45;
+}
